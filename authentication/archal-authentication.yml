@@ -1,0 +1,29 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/archal-openapi-original.json
+docs: https://docs.archal.ai/guides/authentication
+notes: >
+  Control-plane calls use an Archal bearer token (user token via `archal login` or a
+  workspace API key `archal_ws_<key>` set as ARCHAL_TOKEN). The runtime clone proxy uses a
+  two-header model: `x-route-authorization` authenticates the outer route hop while the
+  service-shaped `Authorization` header is preserved for the clone to see. No OAuth scopes
+  (bearer + route apiKey only); a device-authorization grant (RFC 8628) is used for CLI login.
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: archalToken
+  type: http
+  scheme: bearer
+  bearerFormat: Archal API token
+  sources:
+  - openapi/archal-openapi-original.json
+- name: routeAuthorization
+  type: apiKey
+  in: header
+  parameter: x-route-authorization
+  sources:
+  - openapi/archal-openapi-original.json
