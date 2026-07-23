@@ -1,0 +1,25 @@
+generated: '2026-07-18'
+method: probed
+note: >
+  Probed the /.well-known/ discovery surface on all known hosts 2026-07-18. No documents
+  were served (api.archal.ai does not resolve; archal.ai and docs.archal.ai returned 404
+  for every probed path). Absence is a valid, recorded result. No WellKnown/SecurityTxt
+  scoring pointer is emitted because no document returned 200.
+hosts:
+  - host: https://archal.ai
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://api.archal.ai
+    documents:
+      - {path: /.well-known/security.txt, status: 0, note: host does not resolve}
+  - host: https://docs.archal.ai
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}

@@ -1,0 +1,63 @@
+generated: '2026-07-18'
+method: searched
+source:
+  - https://docs.archal.ai/guides/authentication
+  - openapi/archal-openapi-original.json
+summary: >
+  Cross-cutting request/response semantics for the Archal control-plane API and the
+  runtime clone proxy, derived from the OpenAPI and the docs.
+authentication:
+  style: bearer + route-key
+  control_plane:
+    scheme: http bearer
+    header: 'Authorization: Bearer <archal token>'
+    token_kinds:
+      - user token (archal login / dashboard user API key)
+      - workspace API key (archal_ws_<key>, runtime + CI, ARCHAL_TOKEN)
+    docs: https://docs.archal.ai/guides/authentication
+  runtime_proxy:
+    outer_hop_header: x-route-authorization   # Archal bearer for the route hop
+    inner_service_header: Authorization        # preserved service-shaped token the clone sees
+    note: >
+      On direct clone calls the caller sends the service Authorization header explicitly
+      alongside x-route-authorization; on --docker/--sandbox proxy runs a bootstrap token
+      is auto-injected when Authorization is absent.
+  cross_ref: authentication/archal-authentication.yml
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  max_length: 200
+  scope: createSession (POST /api/sessions)
+  source: openapi/archal-openapi-original.json#/components/parameters/IdempotencyKey
+pagination:
+  style: cursor/time-window
+  operation: listTraces (GET /api/traces)
+  params:
+    - name: limit
+      default: 20
+    - name: since
+      type: date-time
+    - name: sessionId
+    - name: scenario
+    - name: includeStats
+metadata:
+  request_scoping: sessionId path segment scopes runtime and trace calls
+versioning:
+  scheme: spec-version
+  current: 0.3.0
+  cross_ref: lifecycle/archal-lifecycle.yml
+error_envelope:
+  content_type: application/json
+  shape:
+    error: string
+    code: string
+    message: string
+    detail: string
+  standard: custom (not RFC 9457 problem+json)
+  cross_ref: errors/archal-problem-types.yml
+rate_limit_signaling:
+  documented: false
+  note: >
+    A 429 Rate limited response is defined on the device-auth endpoint, and sessions
+    accept a per-session rateLimit throttle, but no rate-limit response headers are
+    documented in the spec.

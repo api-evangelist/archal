@@ -1,22 +1,182 @@
 aid: archal
 name: Archal
-description: Archal is a company surfaced as a portfolio company of y-combinator and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Archal is a Y Combinator (S26) company building QA and an improvement loop for AI agents.
+  It provisions hosted, service-shaped CLONES of real SaaS services — GitHub, Slack, Stripe,
+  Jira, Linear, Supabase, Ramp, HubSpot, Datadog, Discord, Google Workspace and more — so an
+  agent that can send emails, change code repositories, or call third-party APIs is tested and
+  scored before it touches production. Clones hold state, enforce referential integrity, and
+  return authentic error shapes, unlike traditional mocks. Its Autoloop turns real production
+  agent traces into reproducible failures and can open a fix PR. Archal ships an npm CLI and
+  Vitest SDK, a device-auth login, a runtime clone proxy, and per-session MCP endpoints.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://docs.archal.ai/logo/dark.svg
 url: https://raw.githubusercontent.com/api-evangelist/archal/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - y-combinator
-x-tier: stub
+x-tier: enriched
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
-apis: []
+- AI Agents
+- Agent Testing
+- Developer Tools
+- API Testing
+- Sandbox
+- Evaluation
+- Infrastructure
+apis:
+- aid: archal:archal-auth-api
+  name: Archal Auth API
+  description: CLI and device authentication.
+  humanURL: https://docs.archal.ai
+  baseURL: https://archal.ai
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/archal-auth-api-openapi.yml
+  - type: Documentation
+    url: https://docs.archal.ai
+  - type: APIReference
+    url: https://docs.archal.ai/api-reference
+  - type: Quickstart
+    url: https://docs.archal.ai/quickstart
+- aid: archal:archal-catalog-api
+  name: Archal Catalog API
+  description: Clone and scenario discovery.
+  humanURL: https://docs.archal.ai
+  baseURL: https://archal.ai
+  tags:
+  - Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/archal-catalog-api-openapi.yml
+  - type: Documentation
+    url: https://docs.archal.ai
+  - type: APIReference
+    url: https://docs.archal.ai/api-reference
+  - type: Quickstart
+    url: https://docs.archal.ai/quickstart
+- aid: archal:archal-results-api
+  name: Archal Results API
+  description: Run, trace, and test-result reporting.
+  humanURL: https://docs.archal.ai
+  baseURL: https://archal.ai
+  tags:
+  - Results
+  properties:
+  - type: OpenAPI
+    url: openapi/archal-results-api-openapi.yml
+  - type: Documentation
+    url: https://docs.archal.ai
+  - type: APIReference
+    url: https://docs.archal.ai/api-reference
+  - type: Quickstart
+    url: https://docs.archal.ai/quickstart
+- aid: archal:archal-runtime-api
+  name: Archal Runtime API
+  description: Direct calls into a running clone.
+  humanURL: https://docs.archal.ai
+  baseURL: https://archal.ai
+  tags:
+  - Runtime
+  properties:
+  - type: OpenAPI
+    url: openapi/archal-runtime-api-openapi.yml
+  - type: Documentation
+    url: https://docs.archal.ai
+  - type: APIReference
+    url: https://docs.archal.ai/api-reference
+  - type: Quickstart
+    url: https://docs.archal.ai/quickstart
+- aid: archal:archal-sessions-api
+  name: Archal Sessions API
+  description: Hosted clone session lifecycle.
+  humanURL: https://docs.archal.ai
+  baseURL: https://archal.ai
+  tags:
+  - Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/archal-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.archal.ai
+  - type: APIReference
+    url: https://docs.archal.ai/api-reference
+  - type: Quickstart
+    url: https://docs.archal.ai/quickstart
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: AgenticAccess
+  url: agentic-access/archal-agentic-access.yml
+- type: DomainSecurity
+  url: security/archal-domain-security.yml
+- type: Authentication
+  url: authentication/archal-authentication.yml
+- type: DeveloperPortal
+  url: https://docs.archal.ai
+- type: Documentation
+  url: https://docs.archal.ai
+- type: APIReference
+  url: https://docs.archal.ai/api-reference
+- type: GettingStarted
+  url: https://docs.archal.ai/quickstart
+- type: GitHubOrganization
+  url: https://github.com/Archal-Labs
+- type: Packages
+  url: packages/archal-packages.yml
+- type: SDKs
+  url: packages/archal-packages.yml
+- type: CLI
+  url: cli/archal-cli.yml
+- type: Sandbox
+  url: sandbox/archal-sandbox.yml
+- type: Conventions
+  url: conventions/archal-conventions.yml
+- type: Idempotency
+  url: conventions/archal-conventions.yml
+- type: ErrorCatalog
+  url: errors/archal-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/archal-lifecycle.yml
+- type: Conformance
+  url: conformance/archal-conformance.yml
+- type: MCPServer
+  url: mcp/archal-mcp.yml
+- type: LLMsTxt
+  url: llms/archal-llms.txt
+- type: Overlay
+  url: overlays/archal-openapi-overlay.yaml
+- type: DataModel
+  url: data-model/archal-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Arazzo
+  name: Create an Archal clone session, drive it, and read the trace
+  url: arazzo/archal-create-and-evaluate.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

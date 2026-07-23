@@ -1,0 +1,10 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/archal-openapi-original.json
+workflows:
+  - file: archal-create-and-evaluate.yml
+    workflowId: createSessionAndEvaluate
+    title: Create an Archal clone session, drive it, and read the trace
+    summary: >
+      Provision a hosted clone session, POST into the cloned service via the runtime proxy,
+      list the resulting traces, then stop the session.

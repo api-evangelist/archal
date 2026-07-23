@@ -1,0 +1,299 @@
+openapi: 3.1.0
+info:
+  title: Archal Auth Sessions API
+  summary: Public API for Archal CLI, session, trace, result, and runtime clone integrations.
+  description: Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.
+  version: 0.3.0
+servers:
+- url: https://archal.ai
+  description: Archal web and CLI API
+- url: https://api.archal.ai
+  description: Hosted runtime proxy
+security:
+- archalToken: []
+tags:
+- name: Sessions
+  description: Hosted clone session lifecycle.
+paths:
+  /api/sessions:
+    get:
+      operationId: listSessions
+      summary: List active hosted clone sessions
+      tags:
+      - Sessions
+      responses:
+        '200':
+          description: Active sessions owned by the authenticated user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createSession
+      summary: Create a hosted clone session
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '200':
+          description: Created hosted clone session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '426':
+          description: CLI upgrade required.
+  /api/sessions/{sessionId}:
+    get:
+      operationId: getSession
+      summary: Get hosted clone session status
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Current session status and endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteSession
+      summary: Stop a hosted clone session
+      tags:
+      - Sessions
+      parameters:
+      - $ref: '#/components/parameters/SessionId'
+      responses:
+        '204':
+          description: Session stopped.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          description: Runtime teardown failed.
+components:
+  responses:
+    Forbidden:
+      description: Authenticated user cannot access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Request is malformed or failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    CreateSessionRequest:
+      type: object
+      required:
+      - clones
+      properties:
+        clones:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          examples:
+          - - github
+        scenarioId:
+          type: string
+        preflightOnly:
+          type: boolean
+        transport:
+          type: string
+          default: cloud
+          examples:
+          - cloud
+        ttlSeconds:
+          type: integer
+          minimum: 1
+          maximum: 86400
+        scenarioRunCount:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 1
+        rateLimit:
+          type: integer
+          minimum: 1
+          maximum: 100000
+        routing:
+          $ref: '#/components/schemas/JsonObject'
+        seeds:
+          type: object
+          additionalProperties:
+            type: string
+        source:
+          $ref: '#/components/schemas/JsonObject'
+        credential:
+          $ref: '#/components/schemas/JsonObject'
+        runConfig:
+          $ref: '#/components/schemas/JsonObject'
+        scenarioDraft:
+          $ref: '#/components/schemas/JsonObject'
+        runProject:
+          $ref: '#/components/schemas/JsonObject'
+      additionalProperties: false
+    JsonObject:
+      type: object
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
+    SessionSummary:
+      type: object
+      required:
+      - sessionId
+      - status
+      - cloneIds
+      - endpoints
+      - apiBaseUrls
+      - createdAt
+      - expiresAt
+      properties:
+        sessionId:
+          type: string
+        status:
+          type: string
+          examples:
+          - starting
+          - running
+          - ended
+          - failed
+        alive:
+          type: boolean
+        cloneIds:
+          type: array
+          items:
+            type: string
+        endpoints:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+        mcp:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+        apiBaseUrls:
+          type: object
+          additionalProperties:
+            type: string
+            format: uri
+        resolvedSeeds:
+          type: object
+          additionalProperties:
+            type: string
+        evidence:
+          $ref: '#/components/schemas/JsonObject'
+        runtimeProvider:
+          type: string
+        scenarioId:
+          type:
+          - string
+          - 'null'
+        batchId:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        endedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lastError:
+          type:
+          - string
+          - 'null'
+      additionalProperties: true
+    SessionListResponse:
+      type: object
+      required:
+      - sessions
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionSummary'
+      additionalProperties: false
+  parameters:
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+        examples:
+        - env_12345
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      schema:
+        type: string
+        maxLength: 200
+  securitySchemes:
+    archalToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Archal API token
+    routeAuthorization:
+      type: apiKey
+      in: header
+      name: x-route-authorization

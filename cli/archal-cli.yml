@@ -1,0 +1,72 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.archal.ai/cli/run
+name: archal
+description: >
+  First-party CLI to run AI agents against hosted service-shaped clones, score them,
+  manage clone sessions, replay production traces, and open fix PRs. Distributed as the
+  `archal` npm package (see packages/archal-packages.yml); typically run via `npx archal`.
+install:
+  - method: npx
+    command: npx archal <command>
+  - method: npm
+    command: npm install archal
+bootstrap:
+  - npx archal init
+  - npx archal login
+commands:
+  - name: run
+    docs: https://docs.archal.ai/cli/run
+    summary: Run a scenario (or ad-hoc task) against clones and score the agent.
+    examples:
+      - archal run scenario.md --docker
+      - archal run scenario.md --docker --runs 5
+      - archal run scenario.md --docker --pass-threshold 80
+      - archal run --task "Create an issue titled hello world" --harness . --docker --clone github
+  - name: clone
+    docs: https://docs.archal.ai/cli/clone
+    summary: Start, list, and stop persistent hosted clone sessions with live API endpoints.
+    examples:
+      - archal clone start github slack
+      - archal clone
+  - name: autoloop
+    docs: https://docs.archal.ai/cli/autoloop
+    summary: Turn production agent traces into reproducible failures and (optionally) fix PRs.
+    examples:
+      - archal autoloop ./prod-traces --repo . --execution-policy reproduce
+      - archal autoloop --repo . --source postgres --database-url-env TRACE_DATABASE_URL --check --json
+      - archal autoloop status --json
+      - archal autoloop status <run-id> --json
+  - name: scenario
+    docs: https://docs.archal.ai/cli/scenario
+    summary: List and manage built-in and local scenarios.
+    examples:
+      - archal scenario list
+  - name: debug
+    docs: https://docs.archal.ai/cli/debug
+    summary: Inspect traces and debug agent runs.
+  - name: config
+    docs: https://docs.archal.ai/cli/config
+    summary: Read and set local CLI configuration (e.g. telemetry).
+    examples:
+      - archal config set telemetry false
+      - archal config show
+  - name: workspace
+    docs: https://docs.archal.ai/cli/workspace
+    summary: Manage the active workspace and workspace API keys.
+  - name: login
+    docs: https://docs.archal.ai/cli/login
+    summary: Authenticate the CLI via device-code login.
+    examples:
+      - archal login
+      - archal logout
+key_flows:
+  - name: Docker / sandbox scored runs
+    detail: Scored service-clone runs require Docker (--docker) or sandbox mode (--sandbox).
+  - name: CI usage
+    detail: Set a workspace API key via ARCHAL_TOKEN=archal_ws_<key> for CI and SSH runs.
+  - name: Autofix PRs
+    detail: The autoloop `fix` policy opens PRs and requires the Archal GitHub App installed on the repo.
+credentials:
+  location: ~/.archal/credentials.json
+  master_key_env: ARCHAL_CREDENTIALS_MASTER_KEY

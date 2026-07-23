@@ -1,0 +1,80 @@
+openapi: 3.1.0
+info:
+  title: Archal Auth Catalog API
+  summary: Public API for Archal CLI, session, trace, result, and runtime clone integrations.
+  description: Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.
+  version: 0.3.0
+servers:
+- url: https://archal.ai
+  description: Archal web and CLI API
+- url: https://api.archal.ai
+  description: Hosted runtime proxy
+security:
+- archalToken: []
+tags:
+- name: Catalog
+  description: Clone and scenario discovery.
+paths:
+  /api/clones:
+    get:
+      operationId: listClones
+      summary: List available clones
+      tags:
+      - Catalog
+      responses:
+        '200':
+          description: Available clone catalog.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonObject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/scenarios:
+    get:
+      operationId: listScenarios
+      summary: List built-in scenarios
+      tags:
+      - Catalog
+      responses:
+        '200':
+          description: Available scenario catalog.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonObject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    JsonObject:
+      type: object
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    archalToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Archal API token
+    routeAuthorization:
+      type: apiKey
+      in: header
+      name: x-route-authorization

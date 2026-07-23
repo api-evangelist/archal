@@ -1,0 +1,12 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/archal-openapi-original.json
+skills:
+  - file: archal-run-clone-session.md
+    name: Run an agent against an Archal clone session
+    api: openapi/archal-openapi-original.json
+    operations: [listClones, createSession, getSession, proxyClonePost, proxyCloneGet, getTrace, deleteSession]
+  - file: archal-inspect-results.md
+    name: Inspect Archal runs, traces, and results
+    api: openapi/archal-openapi-original.json
+    operations: [listSessions, getRun, listTraces, getTrace, ingestTrace, deleteTraces]

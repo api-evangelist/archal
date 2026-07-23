@@ -1,0 +1,85 @@
+generated: '2026-07-18'
+method: searched
+source:
+  - https://docs.archal.ai/guides/authentication
+  - https://docs.archal.ai/guides/sandbox
+  - https://docs.archal.ai/security
+summary: >
+  Archal IS a sandbox: it provisions isolated, service-shaped CLONES of real SaaS services
+  (GitHub, Slack, Stripe, Jira, Linear, and more) so AI agents can be tested before touching
+  production. Clones hold state, enforce referential integrity, and return authentic error
+  shapes; they never connect to the real services.
+run_modes:
+  - mode: docker
+    flag: --docker
+    detail: Scored service-clone runs; controlled proxy path with bootstrap-token auto-injection.
+  - mode: sandbox
+    flag: --sandbox
+    detail: Alternative isolated execution for scored runs without Docker.
+  - mode: session
+    detail: Persistent hosted clone session via `archal clone start` / --reuse-session (lives until stopped or TTL).
+token_prefixes:
+  workspace_api_key: archal_ws_<key>      # runtime + CI credential, ARCHAL_TOKEN
+  route_authorization_example: 'Bearer archal_example'   # x-route-authorization outer hop (from OpenAPI example)
+bootstrap_tokens:
+  note: >
+    Published DUMMY per-clone Authorization values the docs list for direct clone calls; real
+    services reject them. Secret bodies are truncated here to avoid secret-scanner false
+    positives — see https://docs.archal.ai/guides/authentication for the full literal values.
+  clones:
+    - clone: github
+      authorization_prefix: 'Bearer ghp_...'
+      env_vars: [GITHUB_TOKEN]
+    - clone: slack
+      authorization_prefix: 'Bearer xoxb-...'
+      env_vars: [SLACK_TOKEN, SLACK_BOT_TOKEN]
+    - clone: jira
+      authorization_prefix: 'Bearer ATATT3x...'
+      env_vars: [JIRA_API_TOKEN, 'JIRA_EMAIL=agent@acme.com']
+    - clone: stripe
+      authorization_prefix: 'Bearer sk_live_...'
+      env_vars: [STRIPE_API_KEY]
+    - clone: linear
+      authorization_prefix: 'Bearer lin_api_...'
+      env_vars: [LINEAR_API_KEY]
+    - clone: discord
+      authorization_prefix: 'Bot MTAx...'
+      env_vars: [DISCORD_TOKEN]
+    - clone: apify
+      authorization_prefix: 'Bearer apify_api_...'
+      env_vars: [APIFY_TOKEN, APIFY_API_KEY]
+    - clone: supabase
+      authorization_prefix: 'Bearer eyJhbGci...'   # service_role JWT
+      env_vars: [SUPABASE_SERVICE_ROLE_KEY, 'SUPABASE_URL=https://acme.supabase.co']
+available_clones:
+  maturity_note: catalog live via `archal clone`; each may be mature or preview
+  clones:
+    - apify
+    - calcom
+    - clickup
+    - customerio
+    - datadog
+    - discord
+    - github
+    - gitlab
+    - google-workspace
+    - hubspot
+    - jira
+    - linear
+    - ownerrez
+    - pricelabs
+    - ramp
+    - sentry
+    - slack
+    - stripe
+    - supabase
+    - tavily
+    - unipile
+    - webflow
+seeds:
+  docs: https://docs.archal.ai/guides/seeds
+  kinds: [built-in, file-backed, replayed]
+  detail: A seed sets the starting state of a clone before a run.
+telemetry:
+  default: off
+  enable: 'archal config set telemetry true  (or ARCHAL_TELEMETRY=1)'

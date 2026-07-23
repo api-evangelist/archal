@@ -1,0 +1,179 @@
+<!-- generated: 2026-07-18 | method: searched | source: https://docs.archal.ai/llms.txt -->
+# Archal -- QA for AI Agents
+
+Archal tests AI agents before they touch production. It runs the agent against
+hosted service-shaped clones of real SaaS services, then returns a score and
+trace.
+
+Use Archal when an agent can change systems such as GitHub, Slack, Stripe,
+Jira, Linear, Supabase, Google Workspace, Discord, or Ramp.
+
+Docs pages are available as Markdown by appending `.md` to the docs URL before
+fetching it. Prefer that Markdown form over parsing the interactive HTML page.
+
+For complete docs in one file, use https://www.archal.ai/llms-full.txt.
+Treat that URL as Archal's canonical full-text index for coding agents.
+
+## Start
+
+```bash
+npx archal init
+npx archal login
+npx archal run --task "Create an issue titled hello world" --harness . --docker --clone github
+```
+
+CI or SSH (use a workspace API key):
+
+```bash
+export ARCHAL_TOKEN=archal_ws_<your-key>
+```
+
+Workspace API keys are runtime and CI credentials bound to one workspace. They
+can run clones, upload and read traces, and read usage for that workspace. They
+cannot manage audit events or workspace API keys. Use an owner/admin user
+credential, either `archal login` or a dashboard-issued user API key, for
+workspace administration.
+
+For local dev, `archal login` also works.
+
+Scored service-clone runs require Docker (`--docker`) or sandbox mode
+(`--sandbox`).
+
+## Core concepts
+
+- Harness: the command Archal runs to call your agent.
+- Scenario: markdown file with setup, prompt, success criteria, and config.
+- Clone: hosted service-shaped test environment for a real service.
+- Seed: starting state for a clone.
+- Trace: record of tool calls, API requests, state changes, and scoring.
+
+## Minimal `.archal.json`
+
+```json
+{
+  "agent": {
+    "command": "npx",
+    "args": ["tsx", "./.archal/harness.ts"],
+    "env": {
+      "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+    }
+  },
+  "clones": ["github"]
+}
+```
+
+The harness should read `AGENT_TASK`, call the real agent runtime, and
+print a final answer to stdout.
+
+## Minimal scenario
+
+```markdown
+# Create an Issue
+
+## Prompt
+Create a GitHub issue titled "hello world".
+
+## Success Criteria
+- [D] An issue titled "hello world" exists
+
+## Config
+clones: github
+```
+
+Use `[D]` for state checks and `[P]` for judgment calls.
+
+## Ways to run
+
+```bash
+archal run scenario.md --docker
+archal run scenario.md --docker --runs 5
+archal run scenario.md --docker --pass-threshold 80
+archal clone start github slack
+archal scenario list
+```
+
+## Autoloop production traces
+
+Autoloop turns real production agent traces into reproducible failures, and
+optionally fix PRs. It imports a trace from a read-only source, grades whether
+it contains a real failure, reproduces the failure against clones, and, when
+Autofix is on, opens a fix PR.
+
+```bash
+archal autoloop ./prod-traces --repo . --execution-policy reproduce
+archal autoloop --repo . --source postgres --database-url-env TRACE_DATABASE_URL --check --json
+archal autoloop status --json
+archal autoloop status <run-id> --json
+```
+
+The `fix` policy opens PRs and needs the Archal GitHub App installed on the
+repo; `reproduce` grades and replays only, with no PRs. Pass the read-only trace
+database credential by env-var name (`--database-url-env`), never inline. The
+source name/id, schema mapping, cursor, and filters live in the `.archal.json`
+`autoloop` block, not in flags.
+
+## Available clones
+
+Mature and preview clones include Apify, Cal.com, ClickUp, Customer.io,
+Datadog, Discord, GitHub, GitLab, Google Workspace, HubSpot, Jira, Linear,
+OwnerRez, PriceLabs, Ramp, Sentry, Slack, Stripe, Supabase, Tavily, Unipile,
+and Webflow. Run `archal clone` for the current catalog.
+
+## Docs
+
+- Full docs: https://docs.archal.ai
+- Complete full-text index: https://www.archal.ai/llms-full.txt
+- Product: https://www.archal.ai/product
+- Quickstart: https://docs.archal.ai/quickstart
+- Introduction: https://docs.archal.ai/introduction
+- First harness: https://docs.archal.ai/guides/first-harness
+- Run with an agent: https://docs.archal.ai/guides/run-with-agent
+- Run a packaged agent: https://docs.archal.ai/guides/packaged-agents
+- Writing scenarios: https://docs.archal.ai/guides/writing-scenarios
+- Scenario library: https://docs.archal.ai/scenarios/library
+- Autoloop production traces: https://docs.archal.ai/guides/autoloop-production-traces
+- Clone sessions: https://docs.archal.ai/guides/clone-sessions
+- Seeds: https://docs.archal.ai/guides/seeds
+- Harness configuration: https://docs.archal.ai/guides/harness-configuration
+- Sandbox mode: https://docs.archal.ai/guides/sandbox
+- Docker harness contract: https://docs.archal.ai/guides/docker-harness-contract
+- Direct API access: https://docs.archal.ai/guides/direct-api-access
+- Route mode safety: https://docs.archal.ai/guides/route-mode-safety
+- Vitest integration: https://docs.archal.ai/guides/vitest
+- Vitest SDK reference: https://docs.archal.ai/reference/vitest
+- CI integration: https://docs.archal.ai/guides/ci-integration
+- Clones overview: https://docs.archal.ai/clones/overview
+- Apify clone: https://docs.archal.ai/clones/apify
+- Cal.com clone: https://docs.archal.ai/clones/calcom
+- ClickUp clone: https://docs.archal.ai/clones/clickup
+- Customer.io clone: https://docs.archal.ai/clones/customerio
+- Datadog clone: https://docs.archal.ai/clones/datadog
+- Discord clone: https://docs.archal.ai/clones/discord
+- GitHub clone: https://docs.archal.ai/clones/github
+- GitLab clone: https://docs.archal.ai/clones/gitlab
+- Google Workspace clone: https://docs.archal.ai/clones/google-workspace
+- HubSpot clone: https://docs.archal.ai/clones/hubspot
+- Jira clone: https://docs.archal.ai/clones/jira
+- Linear clone: https://docs.archal.ai/clones/linear
+- OwnerRez clone: https://docs.archal.ai/clones/ownerrez
+- PriceLabs clone: https://docs.archal.ai/clones/pricelabs
+- Ramp clone: https://docs.archal.ai/clones/ramp
+- Sentry clone: https://docs.archal.ai/clones/sentry
+- Slack clone: https://docs.archal.ai/clones/slack
+- Stripe clone: https://docs.archal.ai/clones/stripe
+- Supabase clone: https://docs.archal.ai/clones/supabase
+- Tavily clone: https://docs.archal.ai/clones/tavily
+- Unipile clone: https://docs.archal.ai/clones/unipile
+- Webflow clone: https://docs.archal.ai/clones/webflow
+- CLI reference: https://docs.archal.ai/cli/run
+- Clone CLI: https://docs.archal.ai/cli/clone
+- Autoloop CLI: https://docs.archal.ai/cli/autoloop
+- Scenario CLI: https://docs.archal.ai/cli/scenario
+- Debug CLI: https://docs.archal.ai/cli/debug
+- Config CLI: https://docs.archal.ai/cli/config
+- Workspace CLI: https://docs.archal.ai/cli/workspace
+- Login CLI: https://docs.archal.ai/cli/login
+- Security: https://docs.archal.ai/security
+- Authentication: https://docs.archal.ai/guides/authentication
+- OpenAPI spec: https://docs.archal.ai/api-reference/openapi.json
+- Contact: https://archal.ai/contact

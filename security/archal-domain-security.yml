@@ -1,0 +1,18 @@
+generated: '2026-07-18'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: archal.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 19 04:04:30 2026 GMT
+  hsts: null
+- host: api.archal.ai
+  https: false
+domains:
+- domain: archal.ai
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

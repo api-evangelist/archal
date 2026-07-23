@@ -1,0 +1,26 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Archal API
+  version: 1.0.0
+extends: openapi/archal-openapi-original.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enrichment:
+        generated: '2026-07-18'
+        method: generated
+        provider: archal
+        category: AI agent testing / service clones
+        idempotency: Idempotency-Key header on POST /api/sessions
+        auth: http bearer (archalToken) + x-route-authorization apiKey (runtime proxy)
+        conventions: conventions/archal-conventions.yml
+        errors: errors/archal-problem-types.yml
+        conformance: conformance/archal-conventions.yml
+  - target: $.info
+    update:
+      x-agentic-access: agentic-access/archal-agentic-access.yml
+  - target: "$.tags[?(@.name=='Runtime')]"
+    update:
+      x-apievangelist-note: >
+        Runtime proxy preserves the service Authorization header for the clone while
+        authenticating the outer hop on x-route-authorization.

@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: Create an Archal clone session, drive it, and read the trace
+  version: 1.0.0
+  summary: >
+    Provision a hosted clone session, POST a request into the cloned service through the
+    runtime proxy, read the resulting trace, then stop the session.
+sourceDescriptions:
+  - name: archal
+    url: ../openapi/archal-openapi-original.json
+    type: openapi
+workflows:
+  - workflowId: createSessionAndEvaluate
+    summary: End-to-end clone session lifecycle with a proxied call and trace read.
+    inputs:
+      type: object
+      required: [cloneId]
+      properties:
+        cloneId:
+          type: string
+          default: github
+        path:
+          type: string
+          default: repos/acme/widgets/issues
+        routeAuthorization:
+          type: string
+          default: 'Bearer archal_example'
+    steps:
+      - stepId: createSession
+        operationId: createSession
+        requestBody:
+          contentType: application/json
+          payload:
+            clones:
+              - $inputs.cloneId
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          sessionId: $response.body.sessionId
+      - stepId: waitForSession
+        operationId: getSession
+        parameters:
+          - name: sessionId
+            in: path
+            value: $steps.createSession.outputs.sessionId
+        successCriteria:
+          - condition: $statusCode == 200
+      - stepId: driveClone
+        operationId: proxyClonePost
+        parameters:
+          - name: sessionId
+            in: path
+            value: $steps.createSession.outputs.sessionId
+          - name: cloneId
+            in: path
+            value: $inputs.cloneId
+          - name: path
+            in: path
+            value: $inputs.path
+          - name: x-route-authorization
+            in: header
+            value: $inputs.routeAuthorization
+        requestBody:
+          contentType: application/json
+          payload:
+            title: hello world
+        successCriteria:
+          - condition: $statusCode == 200
+      - stepId: readTrace
+        operationId: listTraces
+        parameters:
+          - name: sessionId
+            in: query
+            value: $steps.createSession.outputs.sessionId
+        successCriteria:
+          - condition: $statusCode == 200
+      - stepId: stopSession
+        operationId: deleteSession
+        parameters:
+          - name: sessionId
+            in: path
+            value: $steps.createSession.outputs.sessionId
+        successCriteria:
+          - condition: $statusCode == 204
+    outputs:
+      sessionId: $steps.createSession.outputs.sessionId

@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: Archal Auth Runtime API
+  summary: Public API for Archal CLI, session, trace, result, and runtime clone integrations.
+  description: Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.
+  version: 0.3.0
+servers:
+- url: https://archal.ai
+  description: Archal web and CLI API
+- url: https://api.archal.ai
+  description: Hosted runtime proxy
+security:
+- archalToken: []
+tags:
+- name: Runtime
+  description: Direct calls into a running clone.
+paths:
+  /runtime/{sessionId}/{cloneId}/api/{path}:
+    parameters:
+    - $ref: '#/components/parameters/SessionId'
+    - name: cloneId
+      in: path
+      required: true
+      schema:
+        type: string
+        examples:
+        - github
+        - slack
+        - stripe
+    - name: path
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: proxyCloneGet
+      summary: Proxy a GET request to a running clone
+      tags:
+      - Runtime
+      security:
+      - routeAuthorization: []
+      parameters:
+      - $ref: '#/components/parameters/RouteAuthorization'
+      responses:
+        '200':
+          description: Clone-specific response.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: proxyClonePost
+      summary: Proxy a POST request to a running clone
+      tags:
+      - Runtime
+      security:
+      - routeAuthorization: []
+      parameters:
+      - $ref: '#/components/parameters/RouteAuthorization'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonObject'
+      responses:
+        '200':
+          description: Clone-specific response.
+        '201':
+          description: Clone-specific resource created.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Forbidden:
+      description: Authenticated user cannot access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+        examples:
+        - env_12345
+    RouteAuthorization:
+      name: x-route-authorization
+      in: header
+      description: Archal bearer token for the outer route hop. Keep the standard Authorization header for the service-shaped token the clone should see.
+      schema:
+        type: string
+        examples:
+        - Bearer archal_example
+  schemas:
+    JsonObject:
+      type: object
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
+  securitySchemes:
+    archalToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Archal API token
+    routeAuthorization:
+      type: apiKey
+      in: header
+      name: x-route-authorization

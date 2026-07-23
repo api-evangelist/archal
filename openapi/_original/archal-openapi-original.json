@@ -1,0 +1,1171 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Archal API",
+    "summary": "Public API for Archal CLI, session, trace, result, and runtime clone integrations.",
+    "description": "Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.",
+    "version": "0.3.0"
+  },
+  "servers": [
+    {
+      "url": "https://archal.ai",
+      "description": "Archal web and CLI API"
+    },
+    {
+      "url": "https://api.archal.ai",
+      "description": "Hosted runtime proxy"
+    }
+  ],
+  "security": [
+    {
+      "archalToken": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "CLI and device authentication."
+    },
+    {
+      "name": "Catalog",
+      "description": "Clone and scenario discovery."
+    },
+    {
+      "name": "Sessions",
+      "description": "Hosted clone session lifecycle."
+    },
+    {
+      "name": "Results",
+      "description": "Run, trace, and test-result reporting."
+    },
+    {
+      "name": "Runtime",
+      "description": "Direct calls into a running clone."
+    }
+  ],
+  "paths": {
+    "/auth/me": {
+      "get": {
+        "operationId": "getCurrentCliUser",
+        "summary": "Get the authenticated CLI user",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthMeResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/auth/device": {
+      "post": {
+        "operationId": "createDeviceAuthRequest",
+        "summary": "Start CLI device authentication",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Device-code authentication challenge.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceAuthCreateResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/auth/device/token": {
+      "post": {
+        "operationId": "pollDeviceAuthToken",
+        "summary": "Poll a device authentication request",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceAuthTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token response when the device flow has been approved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonObject"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "428": {
+            "description": "Device authorization is still pending."
+          }
+        }
+      }
+    },
+    "/api/clones": {
+      "get": {
+        "operationId": "listClones",
+        "summary": "List available clones",
+        "tags": [
+          "Catalog"
+        ],
+        "responses": {
+          "200": {
+            "description": "Available clone catalog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/scenarios": {
+      "get": {
+        "operationId": "listScenarios",
+        "summary": "List built-in scenarios",
+        "tags": [
+          "Catalog"
+        ],
+        "responses": {
+          "200": {
+            "description": "Available scenario catalog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/sessions": {
+      "get": {
+        "operationId": "listSessions",
+        "summary": "List active hosted clone sessions",
+        "tags": [
+          "Sessions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Active sessions owned by the authenticated user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSession",
+        "summary": "Create a hosted clone session",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created hosted clone session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "426": {
+            "description": "CLI upgrade required."
+          }
+        }
+      }
+    },
+    "/api/sessions/{sessionId}": {
+      "get": {
+        "operationId": "getSession",
+        "summary": "Get hosted clone session status",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current session status and endpoints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSession",
+        "summary": "Stop a hosted clone session",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Session stopped."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "502": {
+            "description": "Runtime teardown failed."
+          }
+        }
+      }
+    },
+    "/api/runs/{runId}": {
+      "get": {
+        "operationId": "getRun",
+        "summary": "Get a canonical run record",
+        "tags": [
+          "Results"
+        ],
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Canonical run record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/traces": {
+      "get": {
+        "operationId": "listTraces",
+        "summary": "List trace roots",
+        "tags": [
+          "Results"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 20
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "sessionId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scenario",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeStats",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trace root list, optionally with aggregate stats.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      },
+      "post": {
+        "operationId": "ingestTrace",
+        "summary": "Ingest trace payload data",
+        "tags": [
+          "Results"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Ok"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTraces",
+        "summary": "Delete trace roots",
+        "tags": [
+          "Results"
+        ],
+        "parameters": [
+          {
+            "name": "rootTraceId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "all",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Ok"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/api/traces/{rootTraceId}": {
+      "get": {
+        "operationId": "getTrace",
+        "summary": "Get trace root detail",
+        "tags": [
+          "Results"
+        ],
+        "parameters": [
+          {
+            "name": "rootTraceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trace detail and root summary.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "502": {
+            "description": "Trace proxy failed."
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/runtime/{sessionId}/{cloneId}/api/{path}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/SessionId"
+        },
+        {
+          "name": "cloneId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "examples": [
+              "github",
+              "slack",
+              "stripe"
+            ]
+          }
+        },
+        {
+          "name": "path",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "proxyCloneGet",
+        "summary": "Proxy a GET request to a running clone",
+        "tags": [
+          "Runtime"
+        ],
+        "security": [
+          {
+            "routeAuthorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RouteAuthorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Clone-specific response."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "operationId": "proxyClonePost",
+        "summary": "Proxy a POST request to a running clone",
+        "tags": [
+          "Runtime"
+        ],
+        "security": [
+          {
+            "routeAuthorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RouteAuthorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Clone-specific response."
+          },
+          "201": {
+            "description": "Clone-specific resource created."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "archalToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Archal API token"
+      },
+      "routeAuthorization": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-route-authorization"
+      }
+    },
+    "parameters": {
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "schema": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "SessionId": {
+        "name": "sessionId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "examples": [
+            "env_12345"
+          ]
+        }
+      },
+      "RouteAuthorization": {
+        "name": "x-route-authorization",
+        "in": "header",
+        "description": "Archal bearer token for the outer route hop. Keep the standard Authorization header for the service-shaped token the clone should see.",
+        "schema": {
+          "type": "string",
+          "examples": [
+            "Bearer archal_example"
+          ]
+        }
+      }
+    },
+    "responses": {
+      "Ok": {
+        "description": "Request accepted.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/OkResponse"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Request is malformed or failed validation.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing, invalid, or expired Archal token.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Authenticated user cannot access the requested resource.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Requested resource was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Rate limit exceeded.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unavailable": {
+        "description": "Required backing service is unavailable.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "JsonObject": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "OkResponse": {
+        "type": "object",
+        "required": [
+          "ok"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "AuthMeResponse": {
+        "type": "object",
+        "required": [
+          "userId",
+          "plan",
+          "selectedCloneIds",
+          "managedEvaluatorAvailable"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "email"
+          },
+          "plan": {
+            "type": "string"
+          },
+          "selectedCloneIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "managedEvaluatorAvailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DeviceAuthCreateResponse": {
+        "type": "object",
+        "required": [
+          "device_code",
+          "user_code",
+          "verification_uri",
+          "verification_uri_complete",
+          "expires_in",
+          "interval"
+        ],
+        "properties": {
+          "device_code": {
+            "type": "string"
+          },
+          "user_code": {
+            "type": "string"
+          },
+          "verification_uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "verification_uri_complete": {
+            "type": "string",
+            "format": "uri"
+          },
+          "expires_in": {
+            "type": "integer",
+            "examples": [
+              600
+            ]
+          },
+          "interval": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceAuthTokenRequest": {
+        "type": "object",
+        "required": [
+          "device_code"
+        ],
+        "properties": {
+          "device_code": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSessionRequest": {
+        "type": "object",
+        "required": [
+          "clones"
+        ],
+        "properties": {
+          "clones": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              [
+                "github"
+              ]
+            ]
+          },
+          "scenarioId": {
+            "type": "string"
+          },
+          "preflightOnly": {
+            "type": "boolean"
+          },
+          "transport": {
+            "type": "string",
+            "default": "cloud",
+            "examples": [
+              "cloud"
+            ]
+          },
+          "ttlSeconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 86400
+          },
+          "scenarioRunCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 1
+          },
+          "rateLimit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "routing": {
+            "$ref": "#/components/schemas/JsonObject"
+          },
+          "seeds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "$ref": "#/components/schemas/JsonObject"
+          },
+          "credential": {
+            "$ref": "#/components/schemas/JsonObject"
+          },
+          "runConfig": {
+            "$ref": "#/components/schemas/JsonObject"
+          },
+          "scenarioDraft": {
+            "$ref": "#/components/schemas/JsonObject"
+          },
+          "runProject": {
+            "$ref": "#/components/schemas/JsonObject"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionListResponse": {
+        "type": "object",
+        "required": [
+          "sessions"
+        ],
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionSummary"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionSummary": {
+        "type": "object",
+        "required": [
+          "sessionId",
+          "status",
+          "cloneIds",
+          "endpoints",
+          "apiBaseUrls",
+          "createdAt",
+          "expiresAt"
+        ],
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "examples": [
+              "starting",
+              "running",
+              "ended",
+              "failed"
+            ]
+          },
+          "alive": {
+            "type": "boolean"
+          },
+          "cloneIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "endpoints": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "mcp": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "apiBaseUrls": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "resolvedSeeds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/JsonObject"
+          },
+          "runtimeProvider": {
+            "type": "string"
+          },
+          "scenarioId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "batchId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "lastError": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "TestResultPayload": {
+        "type": "object",
+        "required": [
+          "projectName",
+          "services",
+          "results",
+          "summary",
+          "timestamp"
+        ],
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "projectName": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "services": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string"
+            }
+          },
+          "results": {
+            "type": "array",
+            "maxItems": 5000,
+            "items": {
+              "$ref": "#/components/schemas/TestCaseResult"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/TestResultSummary"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TestCaseResult": {
+        "type": "object",
+        "required": [
+          "name",
+          "file",
+          "status",
+          "duration"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "skipped"
+            ]
+          },
+          "duration": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TestResultSummary": {
+        "type": "object",
+        "required": [
+          "total",
+          "passed",
+          "failed",
+          "skipped",
+          "duration"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "passed": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          },
+          "skipped": {
+            "type": "integer"
+          },
+          "duration": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

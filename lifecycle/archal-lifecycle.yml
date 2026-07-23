@@ -1,0 +1,24 @@
+generated: '2026-07-18'
+method: derived
+source:
+  - openapi/archal-openapi-original.json
+  - https://docs.archal.ai
+versioning:
+  scheme: spec-version
+  current: '0.3.0'
+  docs: https://docs.archal.ai/api-reference
+  note: >
+    The published OpenAPI carries info.version 0.3.0; the CLI package (npm `archal`) is at
+    0.10.0. Several clones are marked "preview" vs "mature" in the catalog.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No formal deprecation policy or RFC 8594 Sunset/Deprecation header support was found.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+status_page_note: >
+  No dedicated Archal status page found (archal.statuspage.io resolves to the generic
+  Atlassian Statuspage marketing page, not an Archal status page). No StatusPage pointer emitted.
+deprecated_operations: []

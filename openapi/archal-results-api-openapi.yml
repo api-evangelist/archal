@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: Archal Auth Results API
+  summary: Public API for Archal CLI, session, trace, result, and runtime clone integrations.
+  description: Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.
+  version: 0.3.0
+servers:
+- url: https://archal.ai
+  description: Archal web and CLI API
+- url: https://api.archal.ai
+  description: Hosted runtime proxy
+security:
+- archalToken: []
+tags:
+- name: Results
+  description: Run, trace, and test-result reporting.
+paths:
+  /api/runs/{runId}:
+    get:
+      operationId: getRun
+      summary: Get a canonical run record
+      tags:
+      - Results
+      parameters:
+      - name: runId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Canonical run record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonObject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/traces:
+    get:
+      operationId: listTraces
+      summary: List trace roots
+      tags:
+      - Results
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 20
+      - name: since
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: sessionId
+        in: query
+        schema:
+          type: string
+      - name: scenario
+        in: query
+        schema:
+          type: string
+      - name: includeStats
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Trace root list, optionally with aggregate stats.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonObject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+    post:
+      operationId: ingestTrace
+      summary: Ingest trace payload data
+      tags:
+      - Results
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonObject'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+    delete:
+      operationId: deleteTraces
+      summary: Delete trace roots
+      tags:
+      - Results
+      parameters:
+      - name: rootTraceId
+        in: query
+        schema:
+          type: string
+      - name: before
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: all
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /api/traces/{rootTraceId}:
+    get:
+      operationId: getTrace
+      summary: Get trace root detail
+      tags:
+      - Results
+      parameters:
+      - name: rootTraceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Trace detail and root summary.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonObject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          description: Trace proxy failed.
+        '503':
+          $ref: '#/components/responses/Unavailable'
+components:
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Ok:
+      description: Request accepted.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OkResponse'
+    Unavailable:
+      description: Required backing service is unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Request is malformed or failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    JsonObject:
+      type: object
+      additionalProperties: true
+    OkResponse:
+      type: object
+      required:
+      - ok
+      properties:
+        ok:
+          type: boolean
+          const: true
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
+  securitySchemes:
+    archalToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Archal API token
+    routeAuthorization:
+      type: apiKey
+      in: header
+      name: x-route-authorization

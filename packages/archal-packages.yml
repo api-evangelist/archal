@@ -1,0 +1,19 @@
+generated: '2026-07-18'
+method: searched
+source: https://registry.npmjs.org/archal
+packages:
+  - language: javascript
+    registry: npm
+    name: archal
+    url: https://www.npmjs.com/package/archal
+    install: npm install archal
+    description: Test your agents & integrations against service clones (Archal CLI + Vitest SDK)
+    version: 0.10.0
+    repository: https://github.com/Archal-Labs/archal
+    homepage: https://archal.ai
+    official: true
+notes: >
+  The `archal` npm package is the first-party CLI and Vitest integration SDK. It is
+  typically invoked via `npx archal` and also exposes the `archal/vitest` module for
+  in-suite agent tests. No first-party PyPI, Maven, NuGet, Go, RubyGems, Packagist, or
+  crates.io libraries were found (probed 2026-07-18; PyPI returned 404).

@@ -1,0 +1,49 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/archal-openapi-original.json
+format: custom
+envelope:
+  content_type: application/json
+  schema: ErrorResponse
+  fields: [error, code, message, detail]
+note: >
+  Archal returns a custom JSON error envelope (error/code/message/detail), not RFC 9457
+  application/problem+json. Statuses below are derived from the OpenAPI responses; the
+  runtime proxy additionally passes through the real service clone's native error shape.
+problems:
+  - status: 400
+    title: Bad Request
+    description: Request is malformed or failed validation.
+    source_operations: [pollDeviceAuthToken, createSession, deleteTraces]
+  - status: 401
+    title: Unauthorized
+    description: Missing, invalid, or expired Archal token.
+    source_operations: [getCurrentCliUser, listClones, listScenarios, listSessions, createSession, getSession, deleteSession, getRun, listTraces, ingestTrace, deleteTraces, getTrace, proxyCloneGet, proxyClonePost]
+  - status: 403
+    title: Forbidden
+    description: Authenticated user cannot access the requested resource.
+    source_operations: [createSession, getSession, deleteSession, proxyCloneGet, proxyClonePost]
+  - status: 404
+    title: Not Found
+    description: Requested resource was not found.
+    source_operations: [getSession, deleteSession, getRun, getTrace, proxyCloneGet, proxyClonePost]
+  - status: 426
+    title: Upgrade Required
+    description: CLI upgrade required.
+    source_operations: [createSession]
+  - status: 428
+    title: Precondition Required
+    description: Device authorization is still pending.
+    source_operations: [pollDeviceAuthToken]
+  - status: 429
+    title: Too Many Requests
+    description: Rate limit exceeded.
+    source_operations: [createDeviceAuthRequest]
+  - status: 502
+    title: Bad Gateway
+    description: Runtime teardown failed / trace proxy failed.
+    source_operations: [deleteSession, getTrace]
+  - status: 503
+    title: Service Unavailable
+    description: Required backing service is unavailable.
+    source_operations: [createDeviceAuthRequest, listTraces, ingestTrace, deleteTraces, getTrace]

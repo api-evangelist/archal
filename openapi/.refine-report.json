@@ -1,0 +1,22 @@
+{
+  "provider": "archal",
+  "sources": [
+    "archal-auth-api-openapi.yml",
+    "archal-catalog-api-openapi.yml",
+    "archal-results-api-openapi.yml",
+    "archal-runtime-api-openapi.yml",
+    "archal-sessions-api-openapi.yml"
+  ],
+  "outputs": [
+    "archal-auth-api-openapi.yml",
+    "archal-catalog-api-openapi.yml",
+    "archal-results-api-openapi.yml",
+    "archal-runtime-api-openapi.yml",
+    "archal-sessions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

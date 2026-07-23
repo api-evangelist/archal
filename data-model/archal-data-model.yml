@@ -1,0 +1,58 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/archal-openapi-original.json
+entities:
+  - name: User
+    schema: AuthMeResponse
+    id: userId
+    fields: [userId, email, plan, selectedCloneIds, managedEvaluatorAvailable]
+  - name: Clone
+    id: cloneId
+    description: A hosted, service-shaped test environment for a real SaaS service.
+    id_examples: [github, slack, stripe]
+  - name: Scenario
+    id: scenarioId
+    description: Markdown definition of setup, prompt, success criteria, and config.
+  - name: Session
+    schema: SessionSummary
+    id: sessionId
+    id_examples: [env_12345]
+    fields: [sessionId, status, alive, cloneIds, endpoints, mcp, apiBaseUrls, resolvedSeeds, evidence, runtimeProvider, scenarioId, batchId, createdAt, expiresAt, endedAt, lastError]
+  - name: Run
+    id: runId
+    description: Canonical record of a single scored agent run.
+  - name: Trace
+    id: rootTraceId
+    description: Record of tool calls, API requests, state changes, and scoring for a run.
+  - name: TestResult
+    schema: TestResultPayload
+    fields: [sessionId, projectName, services, results, summary, timestamp]
+relationships:
+  - from: Session
+    to: Clone
+    kind: has_many
+    via: cloneIds
+  - from: Session
+    to: Scenario
+    kind: belongs_to
+    via: scenarioId
+  - from: Trace
+    to: Session
+    kind: belongs_to
+    via: sessionId
+  - from: Trace
+    to: Scenario
+    kind: belongs_to
+    via: scenario
+  - from: TestResult
+    to: Session
+    kind: belongs_to
+    via: sessionId
+  - from: TestResult
+    to: TestCaseResult
+    kind: has_many
+    via: results
+  - from: User
+    to: Clone
+    kind: has_many
+    via: selectedCloneIds
