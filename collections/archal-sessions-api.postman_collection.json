@@ -1,0 +1,1053 @@
+{
+  "item": [
+    {
+      "id": "0712c88b-99f4-4931-9a46-ae8e6639276d",
+      "name": "Sessions",
+      "description": {
+        "content": "Hosted clone session lifecycle.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ae68a12f-b1c5-43cc-b6ca-0e5595ec1ada",
+          "name": "List active hosted clone sessions",
+          "request": {
+            "name": "List active hosted clone sessions",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f964bb33-a0fd-4dfb-9bd3-8fe7dd5dce60",
+              "name": "Active sessions owned by the authenticated user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessions\": [\n    {\n      \"sessionId\": \"string\",\n      \"status\": \"starting\",\n      \"cloneIds\": [\n        \"string\",\n        \"string\"\n      ],\n      \"endpoints\": {\n        \"key_0\": \"https://pJGhDHkhlpVGRWLBUeessNRi.mlrhxeRkh\",\n        \"key_1\": \"http://yMBkXIURcAYlT.hyYACv2.ivFU.WLYyKgD9k+VBWx\"\n      },\n      \"apiBaseUrls\": {\n        \"key_0\": \"http://sHhVPWBjvRWIaXxMJHifETv.esaxPrdW37WGxRgZSarTbp.PR9os,mfbsHs04TsyuR\",\n        \"key_1\": \"http://YOwCVISuZSI.kxfvn5G.in,4KrJO5W,x57lj6s,O5\",\n        \"key_2\": \"https://pKMwWlKMGDJQalc.aoFD.H2TF.e1\",\n        \"key_3\": \"http://xsHUABnjbkZYaRZQauom.sqghtH3NTDayLS\"\n      },\n      \"createdAt\": \"2018-03-22T21:07:19.201Z\",\n      \"expiresAt\": \"1958-05-05T08:42:03.102Z\",\n      \"alive\": false,\n      \"mcp\": {\n        \"key_0\": \"http://MaYYkRQfvzJIuCoTPuWuSWLsxpbz.fhqV,baP5US,F5DrMCdsXmX59GIuzPHV-Eb0WjDnX,cd\",\n        \"key_1\": \"http://zKXg.usszIbNWCiMAW,49LgTHNVBivDvtBmfmmsCZhdDTx3KI3a\",\n        \"key_2\": \"https://wDbfeKFUksrSoNmFgmdavTAWYn.xtjhDsJHRqnK+Cl4FeYtPsPVl+wvsuSUrtdrtSHURPg9.aHXo+TPcvUe7OjFCSzmd\"\n      },\n      \"resolvedSeeds\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"evidence\": {\n        \"key_0\": false,\n        \"key_1\": false\n      },\n      \"runtimeProvider\": \"string\",\n      \"scenarioId\": \"string\",\n      \"batchId\": \"string\",\n      \"endedAt\": \"1970-05-08T16:28:11.064Z\",\n      \"lastError\": \"string\"\n    },\n    {\n      \"sessionId\": \"string\",\n      \"status\": \"starting\",\n      \"cloneIds\": [\n        \"string\",\n        \"string\"\n      ],\n      \"endpoints\": {\n        \"key_0\": \"https://hBs.twplCH69wCDeIazGuGRxiZ\",\n        \"key_1\": \"http://KWfFzQHirtocKN.lpkaoyP3AJM\"\n      },\n      \"apiBaseUrls\": {\n        \"key_0\": \"https://peKvlVBPNnnOFJxjzvxfeKNLzDxdUDbcK.xqaxKAc\",\n        \"key_1\": \"http://wYQcpwYxlHyrOXvSr.bajh5v.exqQxHpyNLHLnFRTgQ2FkbJAHmYXjNvjKxMCZbEhlO4\"\n      },\n      \"createdAt\": \"1968-07-14T08:36:48.515Z\",\n      \"expiresAt\": \"2021-12-28T01:47:34.896Z\",\n      \"alive\": true,\n      \"mcp\": {\n        \"key_0\": \"https://CWxRuZXZXIkaaIaLH.gefiGqM,9t9CiG.gRmzqksrAichFM02DObj1sTrvvCy1HLjEioZgJk\"\n      },\n      \"resolvedSeeds\": {\n        \"key_0\": \"string\"\n      },\n      \"evidence\": {\n        \"key_0\": false\n      },\n      \"runtimeProvider\": \"string\",\n      \"scenarioId\": \"string\",\n      \"batchId\": \"string\",\n      \"endedAt\": \"2017-12-03T12:57:50.539Z\",\n      \"lastError\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6844eba7-0a96-49d7-a696-a8c80f00cc93",
+              "name": "Missing, invalid, or expired Archal token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4f0baa3a-d5b7-4a5a-81cf-3afc6eeaef9b",
+          "name": "Create a hosted clone session",
+          "request": {
+            "name": "Create a hosted clone session",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "Idempotency-Key",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clones\": [\n    \"<string>\"\n  ],\n  \"scenarioId\": \"<string>\",\n  \"preflightOnly\": \"<boolean>\",\n  \"transport\": \"cloud\",\n  \"ttlSeconds\": \"<integer>\",\n  \"scenarioRunCount\": 1,\n  \"rateLimit\": \"<integer>\",\n  \"routing\": {\n    \"key_0\": 1569,\n    \"key_1\": 5765.829242586771\n  },\n  \"seeds\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"source\": {\n    \"key_0\": 7774,\n    \"key_1\": false,\n    \"key_2\": \"string\"\n  },\n  \"credential\": {\n    \"key_0\": true\n  },\n  \"runConfig\": {\n    \"key_0\": 1481.9319271495556\n  },\n  \"scenarioDraft\": {\n    \"key_0\": \"string\"\n  },\n  \"runProject\": {\n    \"key_0\": 8393,\n    \"key_1\": 4709.812652279137\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "539edbe6-f5a6-40c9-9345-983bf25aed87",
+              "name": "Created hosted clone session.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clones\": [\n    \"github\"\n  ],\n  \"scenarioId\": \"<string>\",\n  \"preflightOnly\": \"<boolean>\",\n  \"transport\": \"cloud\",\n  \"ttlSeconds\": \"<integer>\",\n  \"scenarioRunCount\": 1,\n  \"rateLimit\": \"<integer>\",\n  \"routing\": {\n    \"key_0\": 3446.2511633713143,\n    \"key_1\": true\n  },\n  \"seeds\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"source\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": 7280\n  },\n  \"credential\": {\n    \"key_0\": 9553,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 4402\n  },\n  \"runConfig\": {\n    \"key_0\": 8454\n  },\n  \"scenarioDraft\": {\n    \"key_0\": 5473.312371181039\n  },\n  \"runProject\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionId\": \"string\",\n  \"status\": \"starting\",\n  \"cloneIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"endpoints\": {\n    \"key_0\": \"http://F.jzzuam5g.8zrbAaLevQ\",\n    \"key_1\": \"http://yXlUDYfsBqnRSXOWtVYpiJXAvf.jqqZSHFYI9APrr\"\n  },\n  \"apiBaseUrls\": {\n    \"key_0\": \"http://hXy.mjnyCF2pgl-3MT2u411kXz-r3JPsPYghfnSyLpVXbc\",\n    \"key_1\": \"https://SqGJryGjTVbxtmYBIxYegpzb.tlfv7LXOsW+ss7Y6zg8wS+,kbmBkGQpymZX45iv\",\n    \"key_2\": \"http://UWLBXpXlkWUtUCqaLfqsJdy.vkweO-f3Bsqp1kRpo5VFtqmf1qIzz2qgnVijwmXR9elGmV7JOFHKlNKNt0HauhqC8cI\"\n  },\n  \"createdAt\": \"1968-10-30T16:05:36.717Z\",\n  \"expiresAt\": \"2000-04-04T16:46:24.115Z\",\n  \"alive\": false,\n  \"mcp\": {\n    \"key_0\": \"https://LnLKvsrjIwsjvxWRNzhs.nyjHw\"\n  },\n  \"resolvedSeeds\": {\n    \"key_0\": \"string\"\n  },\n  \"evidence\": {\n    \"key_0\": 9831\n  },\n  \"runtimeProvider\": \"string\",\n  \"scenarioId\": \"string\",\n  \"batchId\": \"string\",\n  \"endedAt\": \"1977-04-26T17:14:49.778Z\",\n  \"lastError\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f30f601c-9e9e-4163-8509-bd0e2cbad6bc",
+              "name": "Request is malformed or failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clones\": [\n    \"github\"\n  ],\n  \"scenarioId\": \"<string>\",\n  \"preflightOnly\": \"<boolean>\",\n  \"transport\": \"cloud\",\n  \"ttlSeconds\": \"<integer>\",\n  \"scenarioRunCount\": 1,\n  \"rateLimit\": \"<integer>\",\n  \"routing\": {\n    \"key_0\": 3446.2511633713143,\n    \"key_1\": true\n  },\n  \"seeds\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"source\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": 7280\n  },\n  \"credential\": {\n    \"key_0\": 9553,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 4402\n  },\n  \"runConfig\": {\n    \"key_0\": 8454\n  },\n  \"scenarioDraft\": {\n    \"key_0\": 5473.312371181039\n  },\n  \"runProject\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "050bbd80-ca0f-45c3-99b0-47091bec6f72",
+              "name": "Missing, invalid, or expired Archal token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clones\": [\n    \"github\"\n  ],\n  \"scenarioId\": \"<string>\",\n  \"preflightOnly\": \"<boolean>\",\n  \"transport\": \"cloud\",\n  \"ttlSeconds\": \"<integer>\",\n  \"scenarioRunCount\": 1,\n  \"rateLimit\": \"<integer>\",\n  \"routing\": {\n    \"key_0\": 3446.2511633713143,\n    \"key_1\": true\n  },\n  \"seeds\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"source\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": 7280\n  },\n  \"credential\": {\n    \"key_0\": 9553,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 4402\n  },\n  \"runConfig\": {\n    \"key_0\": 8454\n  },\n  \"scenarioDraft\": {\n    \"key_0\": 5473.312371181039\n  },\n  \"runProject\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd916c01-de60-42b2-9da9-739846a98735",
+              "name": "Authenticated user cannot access the requested resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clones\": [\n    \"github\"\n  ],\n  \"scenarioId\": \"<string>\",\n  \"preflightOnly\": \"<boolean>\",\n  \"transport\": \"cloud\",\n  \"ttlSeconds\": \"<integer>\",\n  \"scenarioRunCount\": 1,\n  \"rateLimit\": \"<integer>\",\n  \"routing\": {\n    \"key_0\": 3446.2511633713143,\n    \"key_1\": true\n  },\n  \"seeds\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"source\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": 7280\n  },\n  \"credential\": {\n    \"key_0\": 9553,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 4402\n  },\n  \"runConfig\": {\n    \"key_0\": 8454\n  },\n  \"scenarioDraft\": {\n    \"key_0\": 5473.312371181039\n  },\n  \"runProject\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7269c0b7-ec7e-4302-9ec1-fb7605ac289e",
+              "name": "CLI upgrade required.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clones\": [\n    \"github\"\n  ],\n  \"scenarioId\": \"<string>\",\n  \"preflightOnly\": \"<boolean>\",\n  \"transport\": \"cloud\",\n  \"ttlSeconds\": \"<integer>\",\n  \"scenarioRunCount\": 1,\n  \"rateLimit\": \"<integer>\",\n  \"routing\": {\n    \"key_0\": 3446.2511633713143,\n    \"key_1\": true\n  },\n  \"seeds\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"source\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": 7280\n  },\n  \"credential\": {\n    \"key_0\": 9553,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 4402\n  },\n  \"runConfig\": {\n    \"key_0\": 8454\n  },\n  \"scenarioDraft\": {\n    \"key_0\": 5473.312371181039\n  },\n  \"runProject\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Upgrade Required (RFC 2817)",
+              "code": 426,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2ce220af-5c23-41b7-b325-2faf86838945",
+          "name": "Get hosted clone session status",
+          "request": {
+            "name": "Get hosted clone session status",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "sessions",
+                ":sessionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sessionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a6a64499-5dd2-46cf-8b5e-f5c6acc0bca8",
+              "name": "Current session status and endpoints.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionId\": \"string\",\n  \"status\": \"starting\",\n  \"cloneIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"endpoints\": {\n    \"key_0\": \"http://F.jzzuam5g.8zrbAaLevQ\",\n    \"key_1\": \"http://yXlUDYfsBqnRSXOWtVYpiJXAvf.jqqZSHFYI9APrr\"\n  },\n  \"apiBaseUrls\": {\n    \"key_0\": \"http://hXy.mjnyCF2pgl-3MT2u411kXz-r3JPsPYghfnSyLpVXbc\",\n    \"key_1\": \"https://SqGJryGjTVbxtmYBIxYegpzb.tlfv7LXOsW+ss7Y6zg8wS+,kbmBkGQpymZX45iv\",\n    \"key_2\": \"http://UWLBXpXlkWUtUCqaLfqsJdy.vkweO-f3Bsqp1kRpo5VFtqmf1qIzz2qgnVijwmXR9elGmV7JOFHKlNKNt0HauhqC8cI\"\n  },\n  \"createdAt\": \"1968-10-30T16:05:36.717Z\",\n  \"expiresAt\": \"2000-04-04T16:46:24.115Z\",\n  \"alive\": false,\n  \"mcp\": {\n    \"key_0\": \"https://LnLKvsrjIwsjvxWRNzhs.nyjHw\"\n  },\n  \"resolvedSeeds\": {\n    \"key_0\": \"string\"\n  },\n  \"evidence\": {\n    \"key_0\": 9831\n  },\n  \"runtimeProvider\": \"string\",\n  \"scenarioId\": \"string\",\n  \"batchId\": \"string\",\n  \"endedAt\": \"1977-04-26T17:14:49.778Z\",\n  \"lastError\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cee9a396-56d5-4edd-9c62-a8226ccf62ea",
+              "name": "Missing, invalid, or expired Archal token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57d80834-08db-4a6e-86a3-89a3ae455735",
+              "name": "Authenticated user cannot access the requested resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c7d7118-85d9-42b3-b696-8af553cb4f67",
+              "name": "Requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dcb0275d-b77e-410f-b57a-41b85788e87a",
+          "name": "Stop a hosted clone session",
+          "request": {
+            "name": "Stop a hosted clone session",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "sessions",
+                ":sessionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sessionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d221f4c-4870-45a3-931c-4560d33a4e2f",
+              "name": "Session stopped.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3739ac8d-382b-430c-b05b-7cb9ad7967f8",
+              "name": "Missing, invalid, or expired Archal token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d46f216-3a9f-4fe0-b170-9092ae4c19fc",
+              "name": "Authenticated user cannot access the requested resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab1146f6-4d49-47e5-94aa-366310391eb7",
+              "name": "Requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e35657e6-6af5-4f55-bcb4-b72daab7a988",
+              "name": "Runtime teardown failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://archal.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "405be52a-2bd8-4c72-8ae7-7f2d0a263970",
+    "name": "Archal Auth Sessions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.",
+      "type": "text/plain"
+    }
+  }
+}

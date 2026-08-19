@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Archal Auth Catalog API",
+    "version": "0.3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Catalog",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available clones",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/clones"
+          },
+          "docs": "List available clones"
+        },
+        {
+          "info": {
+            "name": "List built-in scenarios",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/scenarios"
+          },
+          "docs": "List built-in scenarios"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

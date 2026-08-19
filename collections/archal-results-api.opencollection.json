@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Archal Auth Results API",
+    "version": "0.3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Results",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a canonical run record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/runs/:runId",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a canonical run record"
+        },
+        {
+          "info": {
+            "name": "List trace roots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/traces",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "scenario",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeStats",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List trace roots"
+        },
+        {
+          "info": {
+            "name": "Ingest trace payload data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://archal.ai/api/traces",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Ingest trace payload data"
+        },
+        {
+          "info": {
+            "name": "Delete trace roots",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://archal.ai/api/traces",
+            "params": [
+              {
+                "name": "rootTraceId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "all",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete trace roots"
+        },
+        {
+          "info": {
+            "name": "Get trace root detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/traces/:rootTraceId",
+            "params": [
+              {
+                "name": "rootTraceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get trace root detail"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

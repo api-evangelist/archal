@@ -5,41 +5,47 @@ source: openapi/archal-openapi-original.json
 server:
   name: archal
   transport: http
-  note: >
-    Archal exposes MCP endpoints per hosted clone session, not as a single fixed public
-    server. Each SessionSummary returns an `mcp` map of per-clone MCP endpoint URLs
-    (alongside the REST `endpoints` / `apiBaseUrls` maps), so an agent can drive a cloned
-    service (github, slack, stripe, ...) over MCP for the life of the session.
+  note: 'Archal exposes MCP endpoints per hosted clone session, not as a single fixed public server. Each
+    SessionSummary returns an `mcp` map of per-clone MCP endpoint URLs (alongside the REST `endpoints`
+    / `apiBaseUrls` maps), so an agent can drive a cloned service (github, slack, stripe, ...) over MCP
+    for the life of the session.
+
+    '
   session_field: SessionSummary.mcp
   obtain_via: POST /api/sessions (createSession) then read the `mcp` endpoints
 candidate_control_plane_tools:
   note: Candidate tool surface derived from the Archal control-plane OpenAPI operations.
   status: candidate
   tools:
-    - name: list_clones
-      description: List available clones
-      source_operation: openapi/archal-openapi-original.json#listClones
-    - name: list_scenarios
-      description: List built-in scenarios
-      source_operation: openapi/archal-openapi-original.json#listScenarios
-    - name: create_session
-      description: Create a hosted clone session
-      source_operation: openapi/archal-openapi-original.json#createSession
-    - name: get_session
-      description: Get hosted clone session status
-      source_operation: openapi/archal-openapi-original.json#getSession
-    - name: list_sessions
-      description: List active hosted clone sessions
-      source_operation: openapi/archal-openapi-original.json#listSessions
-    - name: stop_session
-      description: Stop a hosted clone session
-      source_operation: openapi/archal-openapi-original.json#deleteSession
-    - name: get_run
-      description: Get a canonical run record
-      source_operation: openapi/archal-openapi-original.json#getRun
-    - name: list_traces
-      description: List trace roots
-      source_operation: openapi/archal-openapi-original.json#listTraces
-    - name: get_trace
-      description: Get trace root detail
-      source_operation: openapi/archal-openapi-original.json#getTrace
+  - name: list_clones
+    description: List available clones
+    source_operation: openapi/archal-openapi-original.json#listClones
+  - name: list_scenarios
+    description: List built-in scenarios
+    source_operation: openapi/archal-openapi-original.json#listScenarios
+  - name: create_session
+    description: Create a hosted clone session
+    source_operation: openapi/archal-openapi-original.json#createSession
+  - name: get_session
+    description: Get hosted clone session status
+    source_operation: openapi/archal-openapi-original.json#getSession
+  - name: list_sessions
+    description: List active hosted clone sessions
+    source_operation: openapi/archal-openapi-original.json#listSessions
+  - name: stop_session
+    description: Stop a hosted clone session
+    source_operation: openapi/archal-openapi-original.json#deleteSession
+  - name: get_run
+    description: Get a canonical run record
+    source_operation: openapi/archal-openapi-original.json#getRun
+  - name: list_traces
+    description: List trace roots
+    source_operation: openapi/archal-openapi-original.json#listTraces
+  - name: get_trace
+    description: Get trace root detail
+    source_operation: openapi/archal-openapi-original.json#getTrace
+deployment:
+  mode: remote
+  verified: searched
+  checked: '2026-08-12'
+  source: catalog MCP census

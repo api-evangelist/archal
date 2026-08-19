@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Archal Auth Sessions API",
+    "version": "0.3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List active hosted clone sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/sessions"
+          },
+          "docs": "List active hosted clone sessions"
+        },
+        {
+          "info": {
+            "name": "Create a hosted clone session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://archal.ai/api/sessions",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a hosted clone session"
+        },
+        {
+          "info": {
+            "name": "Get hosted clone session status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/api/sessions/:sessionId",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get hosted clone session status"
+        },
+        {
+          "info": {
+            "name": "Stop a hosted clone session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://archal.ai/api/sessions/:sessionId",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Stop a hosted clone session"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

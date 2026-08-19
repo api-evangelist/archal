@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Archal Auth Runtime API",
+    "version": "0.3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Runtime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Proxy a GET request to a running clone",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://archal.ai/runtime/:sessionId/:cloneId/api/:path",
+            "headers": [
+              {
+                "name": "x-route-authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cloneId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "path",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-route-authorization",
+              "value": "{{x-route-authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Proxy a GET request to a running clone"
+        },
+        {
+          "info": {
+            "name": "Proxy a POST request to a running clone",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://archal.ai/runtime/:sessionId/:cloneId/api/:path",
+            "headers": [
+              {
+                "name": "x-route-authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cloneId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "path",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-route-authorization",
+              "value": "{{x-route-authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Proxy a POST request to a running clone"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
