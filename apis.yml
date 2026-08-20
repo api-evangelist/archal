@@ -48,6 +48,8 @@ apis:
   humanURL: https://docs.archal.ai
   baseURL: https://archal.ai
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
