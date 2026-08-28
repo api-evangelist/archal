@@ -9,6 +9,17 @@ description: >-
   return authentic error shapes, unlike traditional mocks. Its Autoloop turns real production
   agent traces into reproducible failures and can open a fix PR. Archal ships an npm CLI and
   Vitest SDK, a device-auth login, a runtime clone proxy, and per-session MCP endpoints.
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
