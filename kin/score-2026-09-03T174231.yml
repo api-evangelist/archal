@@ -1,29 +1,32 @@
-# Kin Score artifact — archal — 2026-08-03T113057
+# Kin Score artifact — archal — 2026-09-03T174231
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: archal
-  schema_version: 0.9
-  scored_at: '2026-08-03'
-  run_ts: 2026-08-03T113057
-  composite: 40.8
+  schema_version: 0.18.2
+  scored_at: '2026-09-03'
+  run_ts: 2026-09-03T174231
+  composite: 35.9
   band: thin
   facets:
-    discoverability: 92.6
-    contract_quality: 57.4
-    governance: 11.5
-    operational_transparency: 5.3
-    developer_ergonomics: 75.5
+    discoverability: 75.9
+    contract_quality: 51.2
+    governance: 4.5
+    operational_transparency: 2.6
+    developer_ergonomics: 73.2
     commercial_clarity: 0.0
+    contract_governance: 4.5
+    access_clarity: 0.0
   agent_readiness:
-    score: 47.1
-    band: agent-native
+    score: 31.0
+    band: agent-ready
     dimensions:
       spec_presence: true
       agentic_access: derived
-      mcp_server: true
-      auth_clarity: true
-      idempotency: documented
+      reversibility_documented: false
+      mcp_server: documented
+      auth_clarity: bearer
+      idempotency: verified
       error_semantics: documented
       openapi_examples: false
       rate_limit_signal: false
@@ -33,6 +36,10 @@ kin_score:
       consent_identity: false
       agent_card: false
       dry_run_mode: false
+      delegated_identity: false
+      protected_resource_metadata: false
+      dynamic_client_registration: false
+      agentic_commerce: false
   provenance:
     mcp: first-party
     skills: derived
