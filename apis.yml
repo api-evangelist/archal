@@ -143,6 +143,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Website
+  url: https://www.archal.ai/
 - type: AgenticAccess
   url: agentic-access/archal-agentic-access.yml
 - type: DomainSecurity
