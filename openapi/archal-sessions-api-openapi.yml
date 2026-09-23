@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Archal Auth Sessions API
+  title: Archal Sessions API
   summary: Public API for Archal CLI, session, trace, result, and runtime clone integrations.
   description: Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.
   version: 0.3.0
@@ -105,6 +105,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: Missing, invalid, or expired Archal token.
       content:
@@ -117,67 +123,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    CreateSessionRequest:
-      type: object
-      required:
-      - clones
-      properties:
-        clones:
-          type: array
-          minItems: 1
-          items:
-            type: string
-          examples:
-          - - github
-        scenarioId:
-          type: string
-        preflightOnly:
-          type: boolean
-        transport:
-          type: string
-          default: cloud
-          examples:
-          - cloud
-        ttlSeconds:
-          type: integer
-          minimum: 1
-          maximum: 86400
-        scenarioRunCount:
-          type: integer
-          minimum: 1
-          maximum: 1000
-          default: 1
-        rateLimit:
-          type: integer
-          minimum: 1
-          maximum: 100000
-        routing:
-          $ref: '#/components/schemas/JsonObject'
-        seeds:
-          type: object
-          additionalProperties:
-            type: string
-        source:
-          $ref: '#/components/schemas/JsonObject'
-        credential:
-          $ref: '#/components/schemas/JsonObject'
-        runConfig:
-          $ref: '#/components/schemas/JsonObject'
-        scenarioDraft:
-          $ref: '#/components/schemas/JsonObject'
-        runProject:
-          $ref: '#/components/schemas/JsonObject'
-      additionalProperties: false
-    JsonObject:
-      type: object
-      additionalProperties: true
     ErrorResponse:
       type: object
       properties:
@@ -189,6 +135,9 @@ components:
           type: string
         detail:
           type: string
+      additionalProperties: true
+    JsonObject:
+      type: object
       additionalProperties: true
     SessionSummary:
       type: object
@@ -273,7 +222,64 @@ components:
           items:
             $ref: '#/components/schemas/SessionSummary'
       additionalProperties: false
+    CreateSessionRequest:
+      type: object
+      required:
+      - clones
+      properties:
+        clones:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          examples:
+          - - github
+        scenarioId:
+          type: string
+        preflightOnly:
+          type: boolean
+        transport:
+          type: string
+          default: cloud
+          examples:
+          - cloud
+        ttlSeconds:
+          type: integer
+          minimum: 1
+          maximum: 86400
+        scenarioRunCount:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 1
+        rateLimit:
+          type: integer
+          minimum: 1
+          maximum: 100000
+        routing:
+          $ref: '#/components/schemas/JsonObject'
+        seeds:
+          type: object
+          additionalProperties:
+            type: string
+        source:
+          $ref: '#/components/schemas/JsonObject'
+        credential:
+          $ref: '#/components/schemas/JsonObject'
+        runConfig:
+          $ref: '#/components/schemas/JsonObject'
+        scenarioDraft:
+          $ref: '#/components/schemas/JsonObject'
+        runProject:
+          $ref: '#/components/schemas/JsonObject'
+      additionalProperties: false
   parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      schema:
+        type: string
+        maxLength: 200
     SessionId:
       name: sessionId
       in: path
@@ -282,12 +288,6 @@ components:
         type: string
         examples:
         - env_12345
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      schema:
-        type: string
-        maxLength: 200
   securitySchemes:
     archalToken:
       type: http

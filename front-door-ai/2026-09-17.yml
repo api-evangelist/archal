@@ -1,0 +1,30 @@
+# Front Door AI Index — archal — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: archal
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.archal.ai
+  final_host: archal.ai
+  ownership: own
+  owner: archal
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 13
+  host_score: 13
+  density: 16.56
+  words: 785
+  tiers:
+    agentic: 7
+    core: 4
+    model: 2
+  ambiguous: 9
+  top_terms:
+    agent: 8
+    AI: 4
+    MCP: 4
+    AI agent: 3
+    Claude: 2
+    automation: 1

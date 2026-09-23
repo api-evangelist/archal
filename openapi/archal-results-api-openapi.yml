@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Archal Auth Results API
+  title: Archal Results API
   summary: Public API for Archal CLI, session, trace, result, and runtime clone integrations.
   description: Archal provisions service-shaped clones of third-party services so AI agents can be tested before they touch production. This spec covers Archal-owned control-plane endpoints and the runtime proxy shape agents use to call clone APIs.
   version: 0.3.0
@@ -154,8 +154,20 @@ paths:
           $ref: '#/components/responses/Unavailable'
 components:
   responses:
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Request is malformed or failed validation.
       content:
         application/json:
           schema:
@@ -172,22 +184,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Request is malformed or failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    JsonObject:
-      type: object
-      additionalProperties: true
     OkResponse:
       type: object
       required:
@@ -196,6 +193,9 @@ components:
         ok:
           type: boolean
           const: true
+      additionalProperties: true
+    JsonObject:
+      type: object
       additionalProperties: true
     ErrorResponse:
       type: object
