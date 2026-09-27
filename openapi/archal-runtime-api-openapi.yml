@@ -77,8 +77,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Forbidden:
-      description: Authenticated user cannot access the requested resource.
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
       content:
         application/json:
           schema:
@@ -89,21 +89,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
+    Forbidden:
+      description: Authenticated user cannot access the requested resource.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    RouteAuthorization:
-      name: x-route-authorization
-      in: header
-      description: Archal bearer token for the outer route hop. Keep the standard Authorization header for the service-shaped token the clone should see.
-      schema:
-        type: string
-        examples:
-        - Bearer archal_example
     SessionId:
       name: sessionId
       in: path
@@ -112,6 +104,14 @@ components:
         type: string
         examples:
         - env_12345
+    RouteAuthorization:
+      name: x-route-authorization
+      in: header
+      description: Archal bearer token for the outer route hop. Keep the standard Authorization header for the service-shaped token the clone should see.
+      schema:
+        type: string
+        examples:
+        - Bearer archal_example
   schemas:
     JsonObject:
       type: object

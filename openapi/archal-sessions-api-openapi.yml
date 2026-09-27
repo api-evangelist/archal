@@ -99,8 +99,8 @@ paths:
           description: Runtime teardown failed.
 components:
   responses:
-    Forbidden:
-      description: Authenticated user cannot access the requested resource.
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
       content:
         application/json:
           schema:
@@ -111,31 +111,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     BadRequest:
       description: Request is malformed or failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Authenticated user cannot access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      schema:
+        type: string
+        maxLength: 200
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+        examples:
+        - env_12345
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        code:
-          type: string
-        message:
-          type: string
-        detail:
-          type: string
-      additionalProperties: true
     JsonObject:
       type: object
       additionalProperties: true
@@ -273,21 +276,18 @@ components:
         runProject:
           $ref: '#/components/schemas/JsonObject'
       additionalProperties: false
-  parameters:
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      schema:
-        type: string
-        maxLength: 200
-    SessionId:
-      name: sessionId
-      in: path
-      required: true
-      schema:
-        type: string
-        examples:
-        - env_12345
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
   securitySchemes:
     archalToken:
       type: http

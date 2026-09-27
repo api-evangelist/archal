@@ -63,7 +63,7 @@ apis:
   name: Archal Auth API
   description: CLI and device authentication.
   humanURL: https://docs.archal.ai
-  baseURL: https://archal.ai
+  baseURL: https://api.archal.ai
   tags:
   - Authentication
   tags_raw:
@@ -81,7 +81,7 @@ apis:
   name: Archal Catalog API
   description: Clone and scenario discovery.
   humanURL: https://docs.archal.ai
-  baseURL: https://archal.ai
+  baseURL: https://api.archal.ai
   tags:
   - Catalog
   properties:
@@ -97,7 +97,7 @@ apis:
   name: Archal Results API
   description: Run, trace, and test-result reporting.
   humanURL: https://docs.archal.ai
-  baseURL: https://archal.ai
+  baseURL: https://api.archal.ai
   tags:
   - Results
   properties:
@@ -113,7 +113,7 @@ apis:
   name: Archal Runtime API
   description: Direct calls into a running clone.
   humanURL: https://docs.archal.ai
-  baseURL: https://archal.ai
+  baseURL: https://api.archal.ai
   tags:
   - Runtime
   properties:
@@ -129,7 +129,7 @@ apis:
   name: Archal Sessions API
   description: Hosted clone session lifecycle.
   humanURL: https://docs.archal.ai
-  baseURL: https://archal.ai
+  baseURL: https://api.archal.ai
   tags:
   - Sessions
   properties:

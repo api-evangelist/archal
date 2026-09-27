@@ -154,12 +154,6 @@ paths:
           $ref: '#/components/responses/Unavailable'
 components:
   responses:
-    NotFound:
-      description: Requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: Missing, invalid, or expired Archal token.
       content:
@@ -172,18 +166,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Ok:
-      description: Request accepted.
+    NotFound:
+      description: Requested resource was not found.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OkResponse'
+            $ref: '#/components/schemas/ErrorResponse'
     Unavailable:
       description: Required backing service is unavailable.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    Ok:
+      description: Request accepted.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OkResponse'
   schemas:
     OkResponse:
       type: object
