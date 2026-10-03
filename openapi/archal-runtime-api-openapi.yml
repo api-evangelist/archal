@@ -76,6 +76,22 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  schemas:
+    JsonObject:
+      type: object
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
   responses:
     Unauthorized:
       description: Missing, invalid, or expired Archal token.
@@ -96,14 +112,6 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    SessionId:
-      name: sessionId
-      in: path
-      required: true
-      schema:
-        type: string
-        examples:
-        - env_12345
     RouteAuthorization:
       name: x-route-authorization
       in: header
@@ -112,22 +120,14 @@ components:
         type: string
         examples:
         - Bearer archal_example
-  schemas:
-    JsonObject:
-      type: object
-      additionalProperties: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        code:
-          type: string
-        message:
-          type: string
-        detail:
-          type: string
-      additionalProperties: true
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+        examples:
+        - env_12345
   securitySchemes:
     archalToken:
       type: http

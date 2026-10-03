@@ -154,14 +154,14 @@ paths:
           $ref: '#/components/responses/Unavailable'
 components:
   responses:
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
+    Unavailable:
+      description: Required backing service is unavailable.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Request is malformed or failed validation.
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
       content:
         application/json:
           schema:
@@ -172,28 +172,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unavailable:
-      description: Required backing service is unavailable.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     Ok:
       description: Request accepted.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OkResponse'
+    BadRequest:
+      description: Request is malformed or failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    OkResponse:
-      type: object
-      required:
-      - ok
-      properties:
-        ok:
-          type: boolean
-          const: true
-      additionalProperties: true
     JsonObject:
       type: object
       additionalProperties: true
@@ -208,6 +199,15 @@ components:
           type: string
         detail:
           type: string
+      additionalProperties: true
+    OkResponse:
+      type: object
+      required:
+      - ok
+      properties:
+        ok:
+          type: boolean
+          const: true
       additionalProperties: true
   securitySchemes:
     archalToken:

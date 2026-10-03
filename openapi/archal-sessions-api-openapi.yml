@@ -98,46 +98,6 @@ paths:
         '502':
           description: Runtime teardown failed.
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Request is malformed or failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Authenticated user cannot access the requested resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    IdempotencyKey:
-      name: Idempotency-Key
-      in: header
-      schema:
-        type: string
-        maxLength: 200
-    SessionId:
-      name: sessionId
-      in: path
-      required: true
-      schema:
-        type: string
-        examples:
-        - env_12345
   schemas:
     JsonObject:
       type: object
@@ -215,16 +175,18 @@ components:
           - string
           - 'null'
       additionalProperties: true
-    SessionListResponse:
+    ErrorResponse:
       type: object
-      required:
-      - sessions
       properties:
-        sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SessionSummary'
-      additionalProperties: false
+        error:
+          type: string
+        code:
+          type: string
+        message:
+          type: string
+        detail:
+          type: string
+      additionalProperties: true
     CreateSessionRequest:
       type: object
       required:
@@ -276,18 +238,56 @@ components:
         runProject:
           $ref: '#/components/schemas/JsonObject'
       additionalProperties: false
-    ErrorResponse:
+    SessionListResponse:
       type: object
+      required:
+      - sessions
       properties:
-        error:
-          type: string
-        code:
-          type: string
-        message:
-          type: string
-        detail:
-          type: string
-      additionalProperties: true
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionSummary'
+      additionalProperties: false
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Authenticated user cannot access the requested resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Request is malformed or failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      schema:
+        type: string
+        maxLength: 200
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+        examples:
+        - env_12345
   securitySchemes:
     archalToken:
       type: http

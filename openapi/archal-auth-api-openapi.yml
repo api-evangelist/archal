@@ -73,43 +73,7 @@ paths:
         '428':
           description: Device authorization is still pending.
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Request is malformed or failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unavailable:
-      description: Required backing service is unavailable.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RateLimited:
-      description: Rate limit exceeded.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    DeviceAuthTokenRequest:
-      type: object
-      required:
-      - device_code
-      properties:
-        device_code:
-          type: string
-      additionalProperties: false
-    JsonObject:
-      type: object
-      additionalProperties: true
     DeviceAuthCreateResponse:
       type: object
       required:
@@ -137,6 +101,9 @@ components:
         interval:
           type: integer
       additionalProperties: false
+    JsonObject:
+      type: object
+      additionalProperties: true
     AuthMeResponse:
       type: object
       required:
@@ -172,6 +139,39 @@ components:
         detail:
           type: string
       additionalProperties: true
+    DeviceAuthTokenRequest:
+      type: object
+      required:
+      - device_code
+      properties:
+        device_code:
+          type: string
+      additionalProperties: false
+  responses:
+    Unavailable:
+      description: Required backing service is unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RateLimited:
+      description: Rate limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Request is malformed or failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     archalToken:
       type: http
