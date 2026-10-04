@@ -46,14 +46,10 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    JsonObject:
+      type: object
+      additionalProperties: true
     ErrorResponse:
       type: object
       properties:
@@ -66,9 +62,13 @@ components:
         detail:
           type: string
       additionalProperties: true
-    JsonObject:
-      type: object
-      additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     archalToken:
       type: http
