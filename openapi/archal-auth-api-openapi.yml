@@ -74,14 +74,6 @@ paths:
           description: Device authorization is still pending.
 components:
   schemas:
-    DeviceAuthTokenRequest:
-      type: object
-      required:
-      - device_code
-      properties:
-        device_code:
-          type: string
-      additionalProperties: false
     DeviceAuthCreateResponse:
       type: object
       required:
@@ -132,6 +124,14 @@ components:
             type: string
         managedEvaluatorAvailable:
           type: boolean
+    DeviceAuthTokenRequest:
+      type: object
+      required:
+      - device_code
+      properties:
+        device_code:
+          type: string
+      additionalProperties: false
     ErrorResponse:
       type: object
       properties:
@@ -148,14 +148,14 @@ components:
       type: object
       additionalProperties: true
   responses:
-    Unauthorized:
-      description: Missing, invalid, or expired Archal token.
+    RateLimited:
+      description: Rate limit exceeded.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    RateLimited:
-      description: Rate limit exceeded.
+    Unauthorized:
+      description: Missing, invalid, or expired Archal token.
       content:
         application/json:
           schema:

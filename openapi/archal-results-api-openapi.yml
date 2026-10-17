@@ -154,6 +154,12 @@ paths:
           $ref: '#/components/responses/Unavailable'
 components:
   responses:
+    NotFound:
+      description: Requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     Ok:
       description: Request accepted.
       content:
@@ -162,12 +168,6 @@ components:
             $ref: '#/components/schemas/OkResponse'
     Unauthorized:
       description: Missing, invalid, or expired Archal token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Requested resource was not found.
       content:
         application/json:
           schema:
@@ -197,6 +197,9 @@ components:
         detail:
           type: string
       additionalProperties: true
+    JsonObject:
+      type: object
+      additionalProperties: true
     OkResponse:
       type: object
       required:
@@ -205,9 +208,6 @@ components:
         ok:
           type: boolean
           const: true
-      additionalProperties: true
-    JsonObject:
-      type: object
       additionalProperties: true
   securitySchemes:
     archalToken:

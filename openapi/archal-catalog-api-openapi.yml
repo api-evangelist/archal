@@ -47,9 +47,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    JsonObject:
-      type: object
-      additionalProperties: true
     ErrorResponse:
       type: object
       properties:
@@ -61,6 +58,9 @@ components:
           type: string
         detail:
           type: string
+      additionalProperties: true
+    JsonObject:
+      type: object
       additionalProperties: true
   responses:
     Unauthorized:
