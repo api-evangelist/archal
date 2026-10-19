@@ -59,72 +59,6 @@ tags:
 - Evaluation
 - Infrastructure
 apis:
-- aid: archal:archal-auth-api
-  name: Archal Auth API
-  description: CLI and device authentication.
-  humanURL: https://docs.archal.ai
-  baseURL: https://api.archal.ai
-  tags:
-  - Authentication
-  tags_raw:
-  - Auth
-  properties:
-  - type: OpenAPI
-    url: openapi/archal-auth-api-openapi.yml
-  - type: Documentation
-    url: https://docs.archal.ai
-  - type: APIReference
-    url: https://docs.archal.ai/api-reference
-  - type: Quickstart
-    url: https://docs.archal.ai/quickstart
-- aid: archal:archal-catalog-api
-  name: Archal Catalog API
-  description: Clone and scenario discovery.
-  humanURL: https://docs.archal.ai
-  baseURL: https://api.archal.ai
-  tags:
-  - Catalog
-  properties:
-  - type: OpenAPI
-    url: openapi/archal-catalog-api-openapi.yml
-  - type: Documentation
-    url: https://docs.archal.ai
-  - type: APIReference
-    url: https://docs.archal.ai/api-reference
-  - type: Quickstart
-    url: https://docs.archal.ai/quickstart
-- aid: archal:archal-results-api
-  name: Archal Results API
-  description: Run, trace, and test-result reporting.
-  humanURL: https://docs.archal.ai
-  baseURL: https://api.archal.ai
-  tags:
-  - Results
-  properties:
-  - type: OpenAPI
-    url: openapi/archal-results-api-openapi.yml
-  - type: Documentation
-    url: https://docs.archal.ai
-  - type: APIReference
-    url: https://docs.archal.ai/api-reference
-  - type: Quickstart
-    url: https://docs.archal.ai/quickstart
-- aid: archal:archal-runtime-api
-  name: Archal Runtime API
-  description: Direct calls into a running clone.
-  humanURL: https://docs.archal.ai
-  baseURL: https://api.archal.ai
-  tags:
-  - Runtime
-  properties:
-  - type: OpenAPI
-    url: openapi/archal-runtime-api-openapi.yml
-  - type: Documentation
-    url: https://docs.archal.ai
-  - type: APIReference
-    url: https://docs.archal.ai/api-reference
-  - type: Quickstart
-    url: https://docs.archal.ai/quickstart
 - aid: archal:archal-sessions-api
   name: Archal Sessions API
   description: Hosted clone session lifecycle.
@@ -135,6 +69,22 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/archal-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.archal.ai
+  - type: APIReference
+    url: https://docs.archal.ai/api-reference
+  - type: Quickstart
+    url: https://docs.archal.ai/quickstart
+- aid: archal:archal-environments-api
+  name: Archal Environments API
+  description: The Environments API from Archal — 3 operation(s) for environments.
+  humanURL: https://docs.archal.ai
+  baseURL: https://api.archal.ai
+  tags:
+  - Environments
+  properties:
+  - type: OpenAPI
+    url: openapi/archal-environments-api-openapi.yml
   - type: Documentation
     url: https://docs.archal.ai
   - type: APIReference

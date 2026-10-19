@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.archal.ai/api-reference/openapi.json",
+ "final": "https://docs.archal.ai/api-reference/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 563156,
+ "sha256": "a06cd479cc933c261627aa1a794774ea9b9f68bcf3cf66c7f11d53a297e12509",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

@@ -1,13 +1,10 @@
 {
   "provider": "archal",
   "sources": [
-    "_original/archal-openapi-original.json"
+    "_original/archal-openapi.json"
   ],
   "outputs": [
-    "archal-auth-api-openapi.yml",
-    "archal-catalog-api-openapi.yml",
-    "archal-results-api-openapi.yml",
-    "archal-runtime-api-openapi.yml",
+    "archal-environments-api-openapi.yml",
     "archal-sessions-api-openapi.yml"
   ],
   "archived": [],
@@ -15,14 +12,31 @@
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "archal-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "archal-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "archal-openapi.json: tagged paths GET /api/environments -> Environments",
+    "archal-openapi.json: tagged paths GET /api/environments/{environmentId} -> Environments",
+    "archal-openapi.json: tagged paths POST /api/environments/{environmentId}/state/validate -> Environments",
+    "archal-openapi.json: tagged paths GET /api/sessions -> Sessions",
+    "archal-openapi.json: tagged paths POST /api/sessions -> Sessions",
+    "archal-openapi.json: tagged paths GET /api/sessions/{sessionId} -> Sessions",
+    "archal-openapi.json: tagged paths DELETE /api/sessions/{sessionId} -> Sessions",
+    "archal-openapi.json: tagged paths POST /api/sessions/{sessionId}/renew -> Sessions",
+    "archal-openapi.json: tagged paths POST /api/sessions/{sessionId}/reset -> Sessions",
+    "archal-openapi.json: tagged paths GET /api/sessions/{sessionId}/environments/{environmentId}/state -> Sessions",
+    "archal-openapi.json: tagged paths PUT /api/sessions/{sessionId}/environments/{environmentId}/state -> Sessions",
+    "archal-openapi.json: tagged paths POST /api/sessions/{sessionId}/environments/{environmentId}/reset -> Sessions",
+    "archal-openapi.json: tagged paths POST /api/sessions/{sessionId}/environments/{environmentId}/state/diff -> Sessions",
+    "archal-openapi.json: tagged paths GET /api/sessions/{sessionId}/evidence -> Sessions",
+    "archal-openapi.json: tagged paths GET /v1/sessions/{sessionId}/environments/{environmentId}/api/{providerPath} -> Sessions",
+    "archal-openapi.json: tagged paths POST /v1/sessions/{sessionId}/environments/{environmentId}/api/{providerPath} -> Sessions",
+    "archal-openapi.json: tagged paths PUT /v1/sessions/{sessionId}/environments/{environmentId}/api/{providerPath} -> Sessions",
+    "archal-openapi.json: tagged paths PATCH /v1/sessions/{sessionId}/environments/{environmentId}/api/{providerPath} -> Sessions",
+    "archal-openapi.json: tagged paths DELETE /v1/sessions/{sessionId}/environments/{environmentId}/api/{providerPath} -> Sessions",
+    "archal-openapi.json: tagged paths HEAD /v1/sessions/{sessionId}/environments/{environmentId}/api/{providerPath} -> Sessions",
+    "archal-openapi.json: tagged paths POST /v1/sessions/{sessionId}/environments/{environmentId}/mcp -> Sessions",
+    "archal-openapi.json: declared missing tag: Environments",
+    "archal-openapi.json: declared missing tag: Sessions",
+    "apis.yml register: written (+1 apis, 2 total)"
   ],
-  "skipped": [
-    "archal-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "archal-catalog-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "archal-results-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "archal-runtime-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "archal-sessions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
-  ]
+  "skipped": []
 }

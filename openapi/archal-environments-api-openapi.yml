@@ -1,0 +1,1637 @@
+openapi: 3.2.0
+info:
+  title: Archal Environments API
+  version: 1.0.0
+  summary: Stateful testing environments with separate lifecycle and provider-scoped credentials
+  description: Use a workspace credential for lifecycle operations. Each created environment returns a short-lived provider-shaped credential for its isolated data plane; the workspace credential is never forwarded to or accepted by provider-compatible endpoints.
+servers:
+- url: https://api.archal.ai
+tags:
+- name: Environments
+paths:
+  /api/environments:
+    get:
+      operationId: listEnvironments
+      summary: List environment capabilities and state contracts
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    type: string
+                    const: archal.environment-catalog
+                  version:
+                    type: integer
+                    exclusiveMinimum: 0
+                    maximum: 9007199254740991
+                  environments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          minLength: 1
+                          maxLength: 80
+                        name:
+                          type: string
+                          minLength: 1
+                        availability:
+                          type: string
+                          enum:
+                          - available
+                          - in-progress
+                        startable:
+                          type: boolean
+                        launch:
+                          type: boolean
+                        transports:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - rest
+                            - mcp
+                        certification:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                              enum:
+                              - healthy
+                              - degraded
+                              - quarantined
+                              - unknown
+                            admission:
+                              type: string
+                              enum:
+                              - allow
+                              - warn
+                              - deny
+                            checkedAt:
+                              anyOf:
+                              - type: string
+                                format: date-time
+                                pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                              - type: 'null'
+                            evidenceSha256:
+                              anyOf:
+                              - type: string
+                                pattern: ^[a-f0-9]{64}$
+                              - type: 'null'
+                          required:
+                          - status
+                          - admission
+                          - checkedAt
+                          - evidenceSha256
+                          additionalProperties: false
+                        state:
+                          type: object
+                          properties:
+                            readable:
+                              type: boolean
+                            writable:
+                              type: boolean
+                            resettable:
+                              type: boolean
+                            formats:
+                              type: array
+                              items:
+                                type: string
+                                enum:
+                                - json
+                                - sql
+                            contract:
+                              anyOf:
+                              - type: object
+                                propertyNames:
+                                  type: string
+                                additionalProperties: {}
+                              - type: 'null'
+                          required:
+                          - readable
+                          - writable
+                          - resettable
+                          - formats
+                          - contract
+                          additionalProperties: false
+                      required:
+                      - id
+                      - name
+                      - availability
+                      - startable
+                      - launch
+                      - transports
+                      - certification
+                      - state
+                      additionalProperties: false
+                required:
+                - schema
+                - version
+                - environments
+                additionalProperties: false
+        '400':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '403':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '409':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '413':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '429':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '502':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '503':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+      tags:
+      - Environments
+  /api/environments/{environmentId}:
+    get:
+      operationId: describeEnvironment
+      summary: Describe one environment and its certification
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: environmentId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 80
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                    maxLength: 80
+                  name:
+                    type: string
+                    minLength: 1
+                  availability:
+                    type: string
+                    enum:
+                    - available
+                    - in-progress
+                  startable:
+                    type: boolean
+                  launch:
+                    type: boolean
+                  transports:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - rest
+                      - mcp
+                  certification:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - healthy
+                        - degraded
+                        - quarantined
+                        - unknown
+                      admission:
+                        type: string
+                        enum:
+                        - allow
+                        - warn
+                        - deny
+                      checkedAt:
+                        anyOf:
+                        - type: string
+                          format: date-time
+                          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        - type: 'null'
+                      evidenceSha256:
+                        anyOf:
+                        - type: string
+                          pattern: ^[a-f0-9]{64}$
+                        - type: 'null'
+                    required:
+                    - status
+                    - admission
+                    - checkedAt
+                    - evidenceSha256
+                    additionalProperties: false
+                  state:
+                    type: object
+                    properties:
+                      readable:
+                        type: boolean
+                      writable:
+                        type: boolean
+                      resettable:
+                        type: boolean
+                      formats:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                          - json
+                          - sql
+                      contract:
+                        anyOf:
+                        - type: object
+                          propertyNames:
+                            type: string
+                          additionalProperties: {}
+                        - type: 'null'
+                    required:
+                    - readable
+                    - writable
+                    - resettable
+                    - formats
+                    - contract
+                    additionalProperties: false
+                required:
+                - id
+                - name
+                - availability
+                - startable
+                - launch
+                - transports
+                - certification
+                - state
+                additionalProperties: false
+        '400':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '403':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '409':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '413':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '429':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '502':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '503':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+      tags:
+      - Environments
+  /api/environments/{environmentId}/state/validate:
+    post:
+      operationId: validateEnvironmentState
+      summary: Validate state without starting an environment
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: environmentId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 80
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+          text/sql:
+            schema:
+              type: string
+              minLength: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    type: string
+                    const: archal.environment-state-validation
+                  version:
+                    type: number
+                    const: 1
+                  environmentId:
+                    type: string
+                    minLength: 1
+                    maxLength: 80
+                  format:
+                    type: string
+                    enum:
+                    - json
+                    - sql
+                  valid:
+                    type: boolean
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                          minLength: 1
+                        code:
+                          type: string
+                          minLength: 1
+                      required:
+                      - path
+                      - message
+                      additionalProperties: {}
+                  contract:
+                    anyOf:
+                    - type: object
+                      properties:
+                        schema:
+                          type: string
+                          minLength: 1
+                        version:
+                          type: integer
+                          exclusiveMinimum: 0
+                          maximum: 9007199254740991
+                      required:
+                      - schema
+                      - version
+                      additionalProperties: false
+                    - type: 'null'
+                required:
+                - schema
+                - version
+                - environmentId
+                - format
+                - valid
+                - issues
+                - contract
+                additionalProperties: false
+        '400':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '403':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '409':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '413':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '415':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '429':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '502':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+        '503':
+          description: The request was rejected
+          headers:
+            X-Request-Id:
+              description: Request correlation identifier
+              schema:
+                type: string
+            Retry-After:
+              description: Seconds to wait before retrying when present
+              schema:
+                type: integer
+                minimum: 0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  error:
+                    type: string
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  requestId:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+                        message:
+                          type: string
+                      required:
+                      - path
+                      - message
+                      additionalProperties: true
+                additionalProperties: true
+      tags:
+      - Environments
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Archal workspace API key
+      description: Used by lifecycle, catalog, and state endpoints
+    providerScopedCredential:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Representative OpenAPI security field. The exact provider-shaped header names and values are returned in environments.*.credentials.headers and are authoritative.
