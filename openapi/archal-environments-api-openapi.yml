@@ -1635,3 +1635,9 @@ components:
       in: header
       name: Authorization
       description: Representative OpenAPI security field. The exact provider-shaped header names and values are returned in environments.*.credentials.headers and are authoritative.
+x-provenance:
+  method: harvested
+  publisher: Archal
+  source: https://docs.archal.ai/api-reference/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
