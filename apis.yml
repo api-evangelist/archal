@@ -81,6 +81,8 @@ apis:
   humanURL: https://docs.archal.ai
   baseURL: https://api.archal.ai
   tags:
+  - Environment
+  tags_raw:
   - Environments
   properties:
   - type: OpenAPI
